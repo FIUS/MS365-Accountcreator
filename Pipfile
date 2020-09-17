@@ -1,0 +1,27 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+jedi = "*"
+mypy = "*"
+nose = "*"
+pep8 = "*"
+pylint = "*"
+
+[packages]
+Flask = "==1.1.1"
+flask-restplus = "==0.13.0"
+Flask-SQLAlchemy = "==2.3.2"
+Flask-Migrate = "==2.5.2"
+Flask-Cors = "==3.0.8"
+Flask-JWT-Extended = "==3.24.1"
+requests = ">=2,<3"
+msal = ">=0.6.1,<2"
+cryptography = "*"
+six = "*"
+ms365_accountcreator = {editable = true,path = "."}
+
+[requires]
+python_version = "3.7"
