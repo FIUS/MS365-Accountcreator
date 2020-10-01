@@ -1,7 +1,7 @@
 """
 This module contains the root namespace
 """
-from flask_restplus import Resource
+from flask_restx import Resource
 from .api_models import ROOT_MODEL
 from . import API
 

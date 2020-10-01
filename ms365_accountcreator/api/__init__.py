@@ -2,7 +2,7 @@
 Main API Module
 """
 from flask import Blueprint
-from flask_restplus import Api
+from flask_restx import Api
 from .. import APP
 
 AUTHORIZATIONS = {
