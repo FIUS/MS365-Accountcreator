@@ -22,6 +22,8 @@ class Config(object):
     GRAPH_API_AUTH_PUBKEY_THUMBPRINT = "0000000000000000000000000000000000000000"
     GRAPH_API_AUTH_PRIVKEY_PATH = "/path/to/ms365AccountCreator.key"
 
+    GRAPH_API_USER_MAIL_DOMAIN = "example.onmicrosoft.com"
+
 class ProductionConfig(Config):
     pass
 
@@ -30,6 +32,8 @@ class DebugConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/test.db'
     JWT_SECRET_KEY = 'debug'
+
+    DEBUG_DONT_CONNECT_TO_API=True
 
     LOGGING_CONFIGS = ['logging_config.json', 'logging_config_debug.json']
 

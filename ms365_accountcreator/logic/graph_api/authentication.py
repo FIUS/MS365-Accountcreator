@@ -11,8 +11,8 @@ class Authenticator:
     app: ConfidentialClientApplication
 
     def __init__(self, config: Dict):
-        client_id: str = config['GRAPH_API_AUTH_AUTHORITY']
-        authority: str = config['GRAPH_API_AUTH_CLIENT_ID']
+        client_id: str = config['GRAPH_API_AUTH_CLIENT_ID']
+        authority: str = config['GRAPH_API_AUTH_AUTHORITY']
         thumprint: str = config['GRAPH_API_AUTH_PUBKEY_THUMBPRINT']
         privKeyPath: str = config['GRAPH_API_AUTH_PRIVKEY_PATH']
 
