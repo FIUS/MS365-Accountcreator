@@ -13,9 +13,12 @@ from .authentication import Authenticator
 GRAPH_API_URL_CREATE_USER = "https://graph.microsoft.com/v1.0/users"
 #See https://docs.microsoft.com/en-us/graph/api/user-assignlicense?view=graph-rest-1.0&tabs=http
 GRAPH_API_URL_ASSIGN_LICENSE = "https://graph.microsoft.com/v1.0/users/{}/assignLicense"
+#See https://docs.microsoft.com/en-us/graph/api/group-post-members?view=graph-rest-1.0&tabs=http
+GRAPH_API_URL_GROUP_ADD_MEMBER = "https://graph.microsoft.com/v1.0/groups/{}/members/$ref"
 #Found by getting the license on a manually created user
 #See https://docs.microsoft.com/en-us/graph/api/user-list-licensedetails?view=graph-rest-1.0&tabs=http
 GRAPH_API_UID_STUDENT_LICENSE = "314c4481-f395-4525-be8b-2ec4bb1e9d91"
+
 
 class ApiAdapter:
     config: Dict
@@ -71,7 +74,11 @@ class ApiAdapter:
         responseObject = json.loads(r.text)
         r = self.internal_assign_user_license(responseObject['id'], GRAPH_API_UID_STUDENT_LICENSE)
         if r.status_code != 200:
-            raise ValueError("Failed to assign license to user. Status code: {}, Server response: {}".format(r.status_code, r.text), json.loads(r.text))   
+            raise ValueError("Failed to assign license to user. Status code: {}, Server response: {}".format(r.status_code, r.text), json.loads(r.text))
+        for group_id in self.config['GRAPH_API_GROUPS_FOR_NEW_USERS']:
+            r = self.internal_add_user_to_group(responseObject['id'], group_id)
+            if r.status_code != 204:
+                raise ValueError("Failed to add user to group. Status code: {}, Server response: {}".format(r.status_code, r.text), json.loads(r.text))
     
     def internal_create_user(self, payload: Dict[str, Union[str, int, float, bool]]) -> requests.Response:
         """
@@ -94,10 +101,19 @@ class ApiAdapter:
         url = GRAPH_API_URL_ASSIGN_LICENSE.format(user_id)
         return requests.post(url, headers=self.internal_get_headers(), json=payload)
     
+    def internal_add_user_to_group(self, user_id, group_id):
+        """
+        Add the given user to the given group.
+        """
+        payload = {
+            "@odata.id": "https://graph.microsoft.com/v1.0/directoryObjects/" + user_id
+        }
+        url = GRAPH_API_URL_GROUP_ADD_MEMBER.format(group_id)
+        return requests.post(url, headers=self.internal_get_headers(), json=payload)
+
     def internal_get_headers(self):
         token = self.internal_get_auth().get_auth_token()
         headers = {
             'Authorization': 'Bearer ' + token
         }
         return headers
-
