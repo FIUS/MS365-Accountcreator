@@ -10,6 +10,7 @@ nose = "*"
 pep8 = "*"
 pylint = "*"
 pycodestyle = "*"
+rope = "*"
 
 [packages]
 Flask = "==1.1.1"
