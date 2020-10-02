@@ -74,4 +74,7 @@ def get_locale():
 # pylint: disable=C0413
 from . import db_models
 # pylint: disable=C0413
+from .logic import Logic
+LOGIC: Logic = Logic(APP.config)
+# pylint: disable=C0413
 from . import routes
