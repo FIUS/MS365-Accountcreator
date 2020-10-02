@@ -26,6 +26,6 @@ API = Api(API_BLUEPRINT, version='0.1', title='ms365_accountcreator API', doc='/
           description='The FIUS ms365_accountcreator api.', authorizations=AUTHORIZATIONS, security='jwt')
 
 # pylint: disable=C0413
-from . import auth_helper, root
+from . import auth_helper, root, account_creation, email_verification
 
 APP.register_blueprint(API_BLUEPRINT, url_prefix='/api')
