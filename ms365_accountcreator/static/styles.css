@@ -1,10 +1,12 @@
 html {
     width: 100%;
+    font-family: "Univers LT W01 65 Bold", arial, sans-serif;
 }
 
 body {
     width: 100%;
     margin: 0px;
+    background-color: #dfdfdf;
 
     display: flex;
     flex-direction: column;
@@ -13,10 +15,24 @@ body {
 
 .title {
     font-size: 4vmin;
-    background-color: aquamarine;
+    color: #333;
+    background-color: #00BEFF;
+    background: #00BEFF;
+    background: linear-gradient(138deg, #64d8ff 0%, #00BEFF 30%, #00BEFF 70%, #00b3d7 100%);
 
     display: flex;
     justify-content: center;
+}
+
+.title > .language-switcher {
+    font-size: 1.2rem;
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+}
+
+.language-switcher a {
+    color: #333;
 }
 
 .title h1 {
@@ -46,14 +62,14 @@ body {
 }
 
 details {
-    background-color: whitesmoke;
+    background-color: white;
     padding-bottom: 1rem;
 }
 
 details > summary {
     padding: 0.6rem;
-    background-color: blue;
-    color: white;
+    background-color: #00BEFF;
+    color: #333;
     font-size: 1.3rem;
     font-weight: bold;
 
@@ -61,8 +77,19 @@ details > summary {
 }
 
 details.inactive > summary {
-    background-color: rgb(46, 46, 46);
+    background-color: #333;
+    color: white;
     pointer-events: none;
+}
+
+details.done > summary {
+    background-color: #004191;
+    color: white;
+}
+
+details.done > summary::after {
+    content: "✓";
+    padding-left: 0.6em;
 }
 
 details > summary::-webkit-details-marker {
@@ -80,6 +107,11 @@ details > .details-content {
 
 label {
     font-weight: bold;
+    color: #333;
+}
+
+.form-field-description {
+    color: #333;
 }
 
 input {

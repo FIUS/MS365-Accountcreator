@@ -7,11 +7,18 @@
     <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="static/styles.css">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <!--link rel="icon" type="image/x-icon" href="favicon.ico"-->
 </head>
 
 <body>
     <div class="title">
+        <div class="language-switcher">
+            <span>
+                <a href="/de">de</a>
+                <span>/</span>
+                <a href="/en">en</a>
+            </span>
+        </div>
         <h1>{{ gettext('Account Registration for Microsoft Teams for University of Stuttgart') }}</h1>
     </div>
     <div class="form-container">
@@ -21,7 +28,7 @@
             <form id="email-form" class="details-content" onsubmit="return emailSubmit(event);">
                 <div class="form-field">
                     <label for="input-email">{{ gettext('Your st****** email address') }}</label>
-                    <input id="input-email" name="email" aria-describedby="input-email-note" type="email" placeholder="st******@stud.uni-stuttgart.de" pattern="st\d{6}@stud\.uni-stuttgart\.de" required>
+                    <input id="input-email" name="email" aria-describedby="input-email-note" type="email" placeholder="st******@stud.uni-stuttgart.de" pattern="{{email_regex}}" required>
                     <span id="input-email-note" class="form-field-description">{{ gettext('You must use your st******@stud.uni-stuttgart.de email in this field.') }}</span>
                 </div>
                 <div class="form-field">
@@ -69,6 +76,8 @@
         function emailSubmit(event) {
             event.preventDefault();
 
+            document.getElementById('step-1').classList.add('done');
+
             const step2 = document.getElementById('step-2');
             step2.classList.remove('inactive');
             step2.setAttribute('open', '');
@@ -79,6 +88,8 @@
         function consentSubmit(event) {
             event.preventDefault();
 
+            document.getElementById('step-2').classList.add('done');
+
             const step3 = document.getElementById('step-3');
             step3.classList.remove('inactive');
             step3.setAttribute('open', '');
@@ -88,6 +99,8 @@
 
         function nameSubmit(event) {
             event.preventDefault();
+
+            document.getElementById('step-3').classList.add('done');
 
             return false;
         }
