@@ -4,7 +4,7 @@ The file for authentication for the graph api
 from typing import Dict
 from msal import ConfidentialClientApplication
 
-AUTHENTICATION_SCOPE = [ "https://graph.microsoft.com/.default" ]
+AUTHENTICATION_SCOPE = ["https://graph.microsoft.com/.default"]
 
 
 class Authenticator:
@@ -14,10 +14,10 @@ class Authenticator:
         client_id: str = config['GRAPH_API_AUTH_CLIENT_ID']
         authority: str = config['GRAPH_API_AUTH_AUTHORITY']
         thumprint: str = config['GRAPH_API_AUTH_PUBKEY_THUMBPRINT']
-        privKeyPath: str = config['GRAPH_API_AUTH_PRIVKEY_PATH']
+        priv_key_path: str = config['GRAPH_API_AUTH_PRIVKEY_PATH']
 
         client_credential: dict = {
-            "thumbprint": thumprint, "private_key": open(privKeyPath).read()}
+            "thumbprint": thumprint, "private_key": open(priv_key_path).read()}
 
         self.app = ConfidentialClientApplication(
             client_id=client_id, authority=authority, client_credential=client_credential)
@@ -37,9 +37,9 @@ class Authenticator:
                 scopes=AUTHENTICATION_SCOPE)
         if "access_token" in result:
             return result["access_token"]
-        else:
-            print(result.get("error"))
-            print(result.get("error_description"))
-            # You may need this when reporting a bug
-            print(result.get("correlation_id"))
-            raise ValueError(result)
+        
+        print(result.get("error"))
+        print(result.get("error_description"))
+        # You may need this when reporting a bug
+        print(result.get("correlation_id"))
+        raise ValueError(result)
