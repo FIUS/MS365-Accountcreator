@@ -28,4 +28,4 @@ API = Api(API_BLUEPRINT, version='0.1', title='ms365_accountcreator API', doc='/
 # pylint: disable=C0413
 from . import auth_helper, root
 
-APP.register_blueprint(API_BLUEPRINT)
+APP.register_blueprint(API_BLUEPRINT, url_prefix='/api')

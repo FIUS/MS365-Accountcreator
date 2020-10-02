@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>{{ gettext('Account Registration for Microsoft Teams for University of Stuttgart') }}</title>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+
+<body>
+    <div class="title">
+        <h1>{{ gettext('Account Registration for Microsoft Teams for University of Stuttgart') }}</h1>
+    </div>
+    <div class="form-container">
+        <!-- Email Form -->
+        <details id="step-1" open>
+            <summary>{{ gettext('Step 1') }}</summary>
+            <form id="email-form" class="details-content" onsubmit="return emailSubmit(event);">
+                <div class="form-field">
+                    <label for="input-email">{{ gettext('Your st****** email address') }}</label>
+                    <input id="input-email" name="email" aria-describedby="input-email-note" type="email" placeholder="st******@stud.uni-stuttgart.de" pattern="st\d{6}\@\.stud\.uni-stuttgart\.de" required>
+                    <span id="input-email-note" class="form-field-description">{{ gettext('You must use your st******@stud.uni-stuttgart.de email in this field.') }}</span>
+                </div>
+                <div class="form-field">
+                    <label for="input-consent-mail">
+                        <input id="input-consent-mail" name="checkbox" aria-describedby="input-consent-mail-note" type="checkbox" required>
+                        {{ gettext('I consent that my st****** email is saved to prevent duplicate Account creation.') }}
+                    </label>
+                    <span id="input-consent-mail-note" class="form-field-description">{{ gettext('Detailed legal text email') }}</span>
+                </div>
+                <input type="submit" name="submit" value="{{ gettext('Next') }}">
+            </form>
+        </details>
+        <!-- Consent Form -->
+        <details id="step-2" class="inactive">
+            <summary>{{ gettext('Step 2') }}</summary>
+            <form id="consent-form" class="details-content" onsubmit="return consentSubmit(event);">
+                <div class="form-field">
+                    <label for="input-consent-teams">
+                        <input id="input-consent-teams" name="checkbox" aria-describedby="input-consent-teams-note" type="checkbox" required>
+                        {{ gettext('I consent that my Name is used to create an Account for Microsoft Teams.') }}
+                    </label>
+                    <span id="input-consent-teams-note" class="form-field-description">{{ gettext('Detailed legal text teams') }}</span>
+                </div>
+                <input type="submit" name="submit" value="{{ gettext('Next') }}">
+            </form>
+        </details>
+        <!-- Name Form -->
+        <details id="step-3" class="inactive">
+            <summary>{{ gettext('Step 3') }}</summary>
+            <form id="name-form" class="details-content" onsubmit="return nameSubmit(event);">
+                <div class="form-field">
+                    <label for="input-first-name">{{ gettext('Name') }}</label>
+                    <input id="input-first-name" name="first" type="text" autocomplete="given-name" placeholder=" " required>
+                </div>
+                <div class="form-field">
+                    <label for="input-family-name">{{ gettext('Family Name') }}</label>
+                    <input id="input-family-name" name="first" type="text" autocomplete="family-name" placeholder=" " required>
+                </div>
+                <input type="submit" name="submit" value="{{ gettext('Create Account') }}">
+            </form>
+        </details>
+    </div>
+
+    <script>
+        function emailSubmit(event) {
+            event.preventDefault();
+
+            const step2 = document.getElementById('step-2');
+            step2.classList.remove('inactive');
+            step2.setAttribute('open', '');
+
+            return false;
+        }
+
+        function consentSubmit(event) {
+            event.preventDefault();
+
+            const step3 = document.getElementById('step-3');
+            step3.classList.remove('inactive');
+            step3.setAttribute('open', '');
+
+            return false;
+        }
+
+        function nameSubmit(event) {
+            event.preventDefault();
+
+            return false;
+        }
+    </script>
+</body>
+
+</html>

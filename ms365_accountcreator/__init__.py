@@ -4,7 +4,8 @@ ms365_accountcreator init file.
 from os import environ
 from os.path import abspath
 
-from flask import Flask
+from flask import Flask, request
+from flask_babel import Babel
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.schema import MetaData
 from flask_migrate import Migrate
@@ -58,6 +59,17 @@ JWT: JWTManager = JWTManager(APP)
 
 # Setup Headers
 CORS(APP)
+
+# Setup Babel translations
+BABEL = Babel(APP)
+
+
+@BABEL.localeselector
+def get_locale():
+    # try to guess the language from the user accept
+    # header the browser transmits. We support de/en. The best match wins.
+    return request.accept_languages.best_match(['de', 'en'])
+
 
 # pylint: disable=C0413
 from . import db_models
