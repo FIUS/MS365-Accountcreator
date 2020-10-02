@@ -3,6 +3,13 @@ name = "pypi"
 url = "https://pypi.org/simple"
 verify_ssl = true
 
+[scripts]
+flask = "flask"
+babel-extract = "pybabel extract -F babel.cfg -o messages.pot ."
+babel-update = "pybabel update -i messages.pot -d ms365_accountcreator/translations"
+babel-create-de = "pybabel init -i messages.pot -d ms365_accountcreator/translations -l de"
+babel-compile = "pybabel compile -d ms365_accountcreator/translations"
+
 [dev-packages]
 jedi = "*"
 mypy = "*"
@@ -24,6 +31,7 @@ msal = ">=0.6.1,<2"
 cryptography = "*"
 six = "*"
 ms365_accountcreator = {editable = true,path = "."}
+flask-babel = "*"
 
 [requires]
 python_version = "3"
