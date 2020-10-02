@@ -5,6 +5,9 @@ ms365_accountcreator.conf
 # VS code IDE folder
 .vscode
 
+# Pipfile.lock to allow multiple python versions
+Pipfile.lock
+
 ### From github teamplate for python
 
 # Byte-compiled / optimized / DLL files

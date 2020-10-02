@@ -9,6 +9,7 @@ mypy = "*"
 nose = "*"
 pep8 = "*"
 pylint = "*"
+pydocstyle = "*"
 
 [packages]
 Flask = "==1.1.1"
@@ -24,4 +25,4 @@ six = "*"
 ms365_accountcreator = {editable = true,path = "."}
 
 [requires]
-python_version = "3.7"
+python_version = "3.8"
