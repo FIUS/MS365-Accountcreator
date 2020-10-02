@@ -1,4 +1,4 @@
-# German translations for MS365-Accountcreator.
+# English translations for MS365-Accountcreator.
 # Copyright (C) 2020
 # This file is distributed under the same license as the MS365-Accountcreator project.
 # Fabian Bühler <@buehlefs>, 2020.
@@ -8,10 +8,10 @@ msgstr ""
 "Project-Id-Version: MS365-Accountcreator 1\n"
 "Report-Msgid-Bugs-To: issue tracker\n"
 "POT-Creation-Date: 2020-10-02 15:04+0200\n"
-"PO-Revision-Date: 2020-10-02 12:44+0200\n"
+"PO-Revision-Date: 2020-10-02 15:04+0200\n"
 "Last-Translator: Fabian Bühler <@buehlefs>\n"
-"Language: de\n"
-"Language-Team: de\n"
+"Language: en\n"
+"Language-Team: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -21,60 +21,60 @@ msgstr ""
 #: ms365_accountcreator/templates/index.html:6
 #: ms365_accountcreator/templates/index.html:15
 msgid "Account Registration for Microsoft Teams for University of Stuttgart"
-msgstr "Account Registrierung für Microsoft Teams an der Universität Stuttgart"
+msgstr "Account Registration for Microsoft Teams for University of Stuttgart"
 
 #: ms365_accountcreator/templates/index.html:20
 msgid "Step 1"
-msgstr "Schritt 1"
+msgstr "Step 1"
 
 #: ms365_accountcreator/templates/index.html:23
 msgid "Your st****** email address"
-msgstr "Deine st****** E-Mail Adresse"
+msgstr "Your st****** email address"
 
 #: ms365_accountcreator/templates/index.html:25
 msgid "You must use your st******@stud.uni-stuttgart.de email in this field."
-msgstr "Du musst deine st******@stud.uni-stuttgart.de E-Mail Adresse in diesem Feld eintragen."
+msgstr "You must use your st******@stud.uni-stuttgart.de email in this field."
 
 #: ms365_accountcreator/templates/index.html:30
 msgid ""
 "I consent that my st****** email is saved to prevent duplicate Account "
 "creation."
-msgstr "Ich stimme zu, dass meine st****** E-Mail Adresse gespeichert wird um zu verhindern, das mehrere Accounts für einen Student angelegt werden können."
+msgstr "I consent that my st****** email is saved to prevent duplicate account creation."
 
 #: ms365_accountcreator/templates/index.html:32
 msgid "Detailed legal text email"
-msgstr "TODO Detailed legal text email"
+msgstr "Detailed legal text email"
 
 #: ms365_accountcreator/templates/index.html:34
 #: ms365_accountcreator/templates/index.html:48
 msgid "Next"
-msgstr "Weiter"
+msgstr "Next"
 
 #: ms365_accountcreator/templates/index.html:39
 msgid "Step 2"
-msgstr "Schritt 2"
+msgstr "Step 2"
 
 #: ms365_accountcreator/templates/index.html:44
 msgid "I consent that my Name is used to create an Account for Microsoft Teams."
-msgstr "Ich stimme zu, dass mein vollständiger Name benutzt wird um einen Account für Microsoft Teams zu erstellen."
+msgstr "I consent that my full name is used to create an account for Microsoft Teams."
 
 #: ms365_accountcreator/templates/index.html:46
 msgid "Detailed legal text teams"
-msgstr "TODO Detailed legal text teams"
+msgstr "Detailed legal text teams"
 
 #: ms365_accountcreator/templates/index.html:53
 msgid "Step 3"
-msgstr "Schritt 3"
+msgstr "Step 3"
 
 #: ms365_accountcreator/templates/index.html:56
 msgid "Name"
-msgstr "Vorname"
+msgstr "Name"
 
 #: ms365_accountcreator/templates/index.html:60
 msgid "Family Name"
-msgstr "Nachname"
+msgstr "Family Name"
 
 #: ms365_accountcreator/templates/index.html:63
 msgid "Create Account"
-msgstr "Account erstellen"
+msgstr "Create Account"
 
