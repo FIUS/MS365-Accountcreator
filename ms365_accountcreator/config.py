@@ -25,6 +25,7 @@ class Config(object):
     GRAPH_API_AUTH_PRIVKEY_PATH = "/path/to/ms365AccountCreator.key"
 
     GRAPH_API_USER_MAIL_DOMAIN = "example.onmicrosoft.com"
+    GRAPH_API_GROUPS_FOR_NEW_USERS = ["00000000-0000-0000-0000-000000000000"]
 
 class ProductionConfig(Config):
     pass
