@@ -1,13 +1,14 @@
 # German translations for MS365-Accountcreator.
 # Copyright (C) 2020
-# This file is distributed under the same license as the MS365-Accountcreator project.
+# This file is distributed under the same license as the
+# MS365-Accountcreator project.
 # Fabian Bühler <@buehlefs>, 2020.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: MS365-Accountcreator 1\n"
 "Report-Msgid-Bugs-To: issue tracker\n"
-"POT-Creation-Date: 2020-10-02 15:04+0200\n"
+"POT-Creation-Date: 2020-10-02 21:25+0200\n"
 "PO-Revision-Date: 2020-10-02 12:44+0200\n"
 "Last-Translator: Fabian Bühler <@buehlefs>\n"
 "Language: de\n"
@@ -19,62 +20,75 @@ msgstr ""
 "Generated-By: Babel 2.8.0\n"
 
 #: ms365_accountcreator/templates/index.html:6
-#: ms365_accountcreator/templates/index.html:15
+#: ms365_accountcreator/templates/index.html:22
 msgid "Account Registration for Microsoft Teams for University of Stuttgart"
 msgstr "Account Registrierung für Microsoft Teams an der Universität Stuttgart"
 
-#: ms365_accountcreator/templates/index.html:20
+#: ms365_accountcreator/templates/index.html:27
 msgid "Step 1"
 msgstr "Schritt 1"
 
-#: ms365_accountcreator/templates/index.html:23
+#: ms365_accountcreator/templates/index.html:30
 msgid "Your st****** email address"
 msgstr "Deine st****** E-Mail Adresse"
 
-#: ms365_accountcreator/templates/index.html:25
+#: ms365_accountcreator/templates/index.html:32
 msgid "You must use your st******@stud.uni-stuttgart.de email in this field."
-msgstr "Du musst deine st******@stud.uni-stuttgart.de E-Mail Adresse in diesem Feld eintragen."
+msgstr ""
+"Du musst deine st******@stud.uni-stuttgart.de E-Mail Adresse in diesem "
+"Feld eintragen."
 
-#: ms365_accountcreator/templates/index.html:30
+#: ms365_accountcreator/templates/index.html:37
 msgid ""
 "I consent that my st****** email is saved to prevent duplicate Account "
 "creation."
-msgstr "Ich stimme zu, dass meine st****** E-Mail Adresse gespeichert wird um zu verhindern, das mehrere Accounts für einen Student angelegt werden können."
+msgstr ""
+"Ich stimme zu, dass meine st****** E-Mail Adresse gespeichert wird um zu "
+"verhindern, das mehrere Accounts für einen Student angelegt werden "
+"können."
 
-#: ms365_accountcreator/templates/index.html:32
+#: ms365_accountcreator/templates/index.html:39
 msgid "Detailed legal text email"
 msgstr "TODO Detailed legal text email"
 
-#: ms365_accountcreator/templates/index.html:34
-#: ms365_accountcreator/templates/index.html:48
+#: ms365_accountcreator/templates/index.html:41
+#: ms365_accountcreator/templates/index.html:55
 msgid "Next"
 msgstr "Weiter"
 
-#: ms365_accountcreator/templates/index.html:39
+#: ms365_accountcreator/templates/index.html:46
 msgid "Step 2"
 msgstr "Schritt 2"
 
-#: ms365_accountcreator/templates/index.html:44
+#: ms365_accountcreator/templates/index.html:51
 msgid "I consent that my Name is used to create an Account for Microsoft Teams."
-msgstr "Ich stimme zu, dass mein vollständiger Name benutzt wird um einen Account für Microsoft Teams zu erstellen."
+msgstr ""
+"Ich stimme zu, dass mein vollständiger Name benutzt wird um einen Account"
+" für Microsoft Teams zu erstellen."
 
-#: ms365_accountcreator/templates/index.html:46
+#: ms365_accountcreator/templates/index.html:53
 msgid "Detailed legal text teams"
 msgstr "TODO Detailed legal text teams"
 
-#: ms365_accountcreator/templates/index.html:53
+#: ms365_accountcreator/templates/index.html:60
 msgid "Step 3"
 msgstr "Schritt 3"
 
-#: ms365_accountcreator/templates/index.html:56
+#: ms365_accountcreator/templates/index.html:63
 msgid "Name"
 msgstr "Vorname"
 
-#: ms365_accountcreator/templates/index.html:60
+#: ms365_accountcreator/templates/index.html:67
 msgid "Family Name"
 msgstr "Nachname"
 
-#: ms365_accountcreator/templates/index.html:63
+#: ms365_accountcreator/templates/index.html:70
 msgid "Create Account"
 msgstr "Account erstellen"
+
+#: ms365_accountcreator/templates/index.html:94
+#: ms365_accountcreator/templates/index.html:117
+#: ms365_accountcreator/templates/index.html:133
+msgid "Consent needed"
+msgstr "Es muss zugestimmt werden um fortfahren zu können"
 

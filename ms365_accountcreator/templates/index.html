@@ -73,20 +73,50 @@
     </div>
 
     <script>
+        const url_api_endpoint_email_verification = "{{url_api_endpoint_email_verification}}"
+        const url_api_endpoint_account_creation = "{{url_api_endpoint_account_creation}}"
+
+        function postData(url = '', data = {}) {
+            return fetch(url, {
+                method: 'POST',
+                mode: 'cors',
+                cache: 'no-cache',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+        }
+
         function emailSubmit(event) {
             event.preventDefault();
+            if(! document.getElementById('input-consent-mail').checked) {
+                alert("{{ gettext('Consent needed') }}")
+                return false;
+            }
 
-            document.getElementById('step-1').classList.add('done');
-
-            const step2 = document.getElementById('step-2');
-            step2.classList.remove('inactive');
-            step2.setAttribute('open', '');
-
+            let email = document.getElementById('input-email').value
+            postData(url_api_endpoint_email_verification, {'email': email}).then(response => {response.json().then(
+                response_data => {
+                    if (response_data.valid) {
+                        document.getElementById('step-1').classList.add('done');
+                        const step2 = document.getElementById('step-2');
+                        step2.classList.remove('inactive');
+                        step2.setAttribute('open', '');
+                    } else {
+                        alert(response_data.reason)
+                    }
+                })}
+            );
             return false;
         }
 
         function consentSubmit(event) {
             event.preventDefault();
+            if(! (document.getElementById('input-consent-mail').checked && document.getElementById('input-consent-teams').checked)) {
+                alert("{{ gettext('Consent needed') }}")
+                return false;
+            }
 
             document.getElementById('step-2').classList.add('done');
 
@@ -99,8 +129,26 @@
 
         function nameSubmit(event) {
             event.preventDefault();
+            if(! (document.getElementById('input-consent-mail').checked && document.getElementById('input-consent-teams').checked)) {
+                alert("{{ gettext('Consent needed') }}")
+                return false;
+            }
 
-            document.getElementById('step-3').classList.add('done');
+            let first_name = document.getElementById('input-first-name').value
+            let last_name = document.getElementById('input-family-name').value
+            let email = document.getElementById('input-email').value
+            postData(url_api_endpoint_account_creation, {'first_name': first_name, 'last_name': last_name, 'email': email}).then(
+                response => {
+                    if(response.ok) {
+                        document.getElementById('step-3').classList.add('done');
+                    } else {
+                        response.json().then(
+                            response_data => {
+                                alert(response_data.message);
+                            }
+                        );
+                    }
+                });
 
             return false;
         }
