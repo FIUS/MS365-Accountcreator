@@ -3,6 +3,7 @@ This module contains all API endpoints for the namespace 'account_creation'
 """
 from flask import request
 from flask_restx import Resource, abort
+from flask_babel import gettext, force_locale
 
 from . import API
 from .api_models import ACCOUNT_CREATION_POST
@@ -30,13 +31,15 @@ class AccountCreation(Resource):
         """
         Create a new account
         """
-        try:
-            LOGIC.create_account(** request.get_json())
-            return "", 204
-        except EmailIllegalError:
-            abort(400, "Email illegal")
-        except EmailAlreadyUsedError:
-            abort(400, "Email already used")
-        except GraphApiError as err:
-            abort(500, "Upstream API error")
-            APP_LOGGER.error(err)
+        lang: str = request.headers.get('lang', 'en')
+        with force_locale(lang):
+            try:
+                LOGIC.create_account(** request.get_json())
+                return "", 204
+            except EmailIllegalError:
+                abort(400, gettext("Email illegal"))
+            except EmailAlreadyUsedError:
+                abort(400, gettext("Email already used"))
+            except GraphApiError as err:
+                abort(500, gettext("Upstream API error"))
+                APP_LOGGER.error(err)

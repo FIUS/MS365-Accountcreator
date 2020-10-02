@@ -7,6 +7,8 @@ import smtplib
 from logging import Logger, getLogger
 from email.message import EmailMessage
 
+from flask_babel import gettext
+
 class Email:
     """
     Class for sending emails
@@ -59,4 +61,7 @@ class Email:
         Sends the registration email to the given recipient,
         containing the given token_url for mail verification
         """
-        self.send_email(recipient_address, self.config["REGISTRATION_MAIL_SUBJECT"], self.config["REGISTRATION_MAIL_BODY"].format(username, password))
+        self.send_email(recipient_address,
+                        gettext("registration mail subject"),
+                        gettext("registration mail body with %(username)s and %(password)s",
+                                username=username, password=password))

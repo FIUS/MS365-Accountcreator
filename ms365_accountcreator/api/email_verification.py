@@ -3,7 +3,8 @@ This module contains all API endpoints for the namespace 'email_verification'
 """
 from typing import Dict
 from flask import request
-from flask_restx import Resource, abort
+from flask_restx import Resource
+from flask_babel import gettext, force_locale
 
 from . import API
 from .api_models import EMAIL_VERIFICATION_POST, EMAIL_VERIFICATION_ANSWER
@@ -26,10 +27,12 @@ class EmailVerification(Resource):
         """
         Verify the email address
         """
-        email: str = request.get_json()['email']
-        result: Dict = {'valid': True}
-        if not LOGIC.verify_mail_is_legal(email):
-            result = { 'valid': False, 'reason': "Email illegal"}
-        elif not LOGIC.verify_mail_has_not_been_used(email):
-            result = { 'valid': False, 'reason': "Email already used"}
-        return result
+        lang: str = request.headers.get('lang', 'en')
+        with force_locale(lang):
+            email: str = request.get_json()['email']
+            result: Dict = {'valid': True}
+            if not LOGIC.verify_mail_is_legal(email):
+                result = {'valid': False, 'reason': gettext("Email illegal")}
+            elif not LOGIC.verify_mail_has_not_been_used(email):
+                result = {'valid': False, 'reason': gettext("Email already used")}
+            return result
