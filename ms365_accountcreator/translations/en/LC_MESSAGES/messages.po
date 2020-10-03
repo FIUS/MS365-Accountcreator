@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MS365-Accountcreator 1\n"
 "Report-Msgid-Bugs-To: issue tracker\n"
-"POT-Creation-Date: 2020-10-03 18:05+0200\n"
+"POT-Creation-Date: 2020-10-03 21:47+0200\n"
 "PO-Revision-Date: 2020-10-02 15:04+0200\n"
 "Last-Translator: Fabian Bühler <@buehlefs>\n"
 "Language: en\n"
@@ -55,19 +55,40 @@ msgstr ""
 msgid "Account Registration for Microsoft Teams for University of Stuttgart"
 msgstr "Account Registration for Microsoft Teams for University of Stuttgart"
 
-#: ms365_accountcreator/templates/index.html:27
+#: ms365_accountcreator/templates/index.html:28
+msgid "Internet Explorer is NOT supported!"
+msgstr ""
+
+#: ms365_accountcreator/templates/index.html:29
+msgid ""
+"Please use a recent Firefox, Chrome, Edge or Safari browser to access "
+"this site!"
+msgstr ""
+
+#: ms365_accountcreator/templates/index.html:38
+msgid "Step 0"
+msgstr "Introduction"
+
+#: ms365_accountcreator/templates/index.html:40
+msgid "Explanation and statement containing %(support)s"
+msgstr "This year the computer science departement uses Microsoft Teams to help to improve the online teaching. \n"
+"For the best results, it is a good idea for students to have a Microsoft account in the directory of the departement. \n"
+"To make it easier, we created this small tool to automatically create these accounts. \n"
+"If you have any questions please contact <a href=mailto:%(support)s>%(support)s</a>. "
+
+#: ms365_accountcreator/templates/index.html:45
 msgid "Step 1"
 msgstr "Step 1"
 
-#: ms365_accountcreator/templates/index.html:30
+#: ms365_accountcreator/templates/index.html:48
 msgid "Your st****** email address"
 msgstr "Your st****** email address"
 
-#: ms365_accountcreator/templates/index.html:32
+#: ms365_accountcreator/templates/index.html:50
 msgid "You must use your st******@stud.uni-stuttgart.de email in this field."
 msgstr "You must use your st******@stud.uni-stuttgart.de email in this field."
 
-#: ms365_accountcreator/templates/index.html:37
+#: ms365_accountcreator/templates/index.html:56
 msgid ""
 "I consent that my st****** email is saved to prevent duplicate Account "
 "creation."
@@ -75,54 +96,54 @@ msgstr ""
 "I consent that my st****** email is saved to prevent duplicate account "
 "creation."
 
-#: ms365_accountcreator/templates/index.html:39
+#: ms365_accountcreator/templates/index.html:58
 msgid "Detailed legal text email"
 msgstr "Detailed legal text email"
 
-#: ms365_accountcreator/templates/index.html:41
-#: ms365_accountcreator/templates/index.html:55
+#: ms365_accountcreator/templates/index.html:60
+#: ms365_accountcreator/templates/index.html:75
 msgid "Next"
 msgstr "Next"
 
-#: ms365_accountcreator/templates/index.html:46
+#: ms365_accountcreator/templates/index.html:65
 msgid "Step 2"
 msgstr "Step 2"
 
-#: ms365_accountcreator/templates/index.html:51
+#: ms365_accountcreator/templates/index.html:71
 msgid "I consent that my Name is used to create an Account for Microsoft Teams."
 msgstr ""
 "I consent that my full name is used to create an account for Microsoft "
 "Teams."
 
-#: ms365_accountcreator/templates/index.html:53
+#: ms365_accountcreator/templates/index.html:73
 msgid "Detailed legal text teams"
 msgstr "Detailed legal text teams"
 
-#: ms365_accountcreator/templates/index.html:60
+#: ms365_accountcreator/templates/index.html:80
 msgid "Step 3"
 msgstr "Step 3"
 
-#: ms365_accountcreator/templates/index.html:63
+#: ms365_accountcreator/templates/index.html:83
 msgid "Name"
 msgstr "Name"
 
-#: ms365_accountcreator/templates/index.html:67
+#: ms365_accountcreator/templates/index.html:87
 msgid "Family Name"
 msgstr "Family Name"
 
-#: ms365_accountcreator/templates/index.html:70
+#: ms365_accountcreator/templates/index.html:90
 msgid "Create Account"
 msgstr "Create Account"
 
-#: ms365_accountcreator/templates/index.html:74
+#: ms365_accountcreator/templates/index.html:94
 msgid "Result"
 msgstr "Result"
 
-#: ms365_accountcreator/templates/index.html:76
+#: ms365_accountcreator/templates/index.html:96
 msgid "Awaiting API response:"
 msgstr "Awaiting API response"
 
-#: ms365_accountcreator/templates/index.html:172
+#: ms365_accountcreator/templates/index.html:197
 msgid ""
 "Your account was successfully created and an email with the password will"
 " be sent to your specified st****** email."
@@ -130,8 +151,8 @@ msgstr ""
 "Your account was successfully created. An email withyour account data and"
 " the password will be sent to your specified st****** email."
 
-#: ms365_accountcreator/templates/index.html:184
-#: ms365_accountcreator/templates/index.html:191
+#: ms365_accountcreator/templates/index.html:209
+#: ms365_accountcreator/templates/index.html:216
 msgid ""
 "There was an error creating your account. Please try again later or "
 "contact the administrator of this site."

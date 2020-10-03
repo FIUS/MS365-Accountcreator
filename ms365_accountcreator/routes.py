@@ -19,11 +19,12 @@ def default_route(lang):
         request.accept_languages = LanguageAccept(values)
         flask_babel_refresh()
     email_regex = APP.config.get('EMAIL_ADDRESS_FILTER', '.*')
+    support_email = APP.config.get('SUPPORT_EMAIL', "")
     url_email_verification = url_for("api.email_verification_email_verification")
     url_account_creation = url_for("api.account_creation_account_creation")
     lang_used = "en"
     locale = get_locale()
     if locale is not None:
         lang_used = locale.language
-    return render_template('index.html', email_regex=email_regex, lang = lang_used,
+    return render_template('index.html', email_regex=email_regex, lang = lang_used, support_email=support_email,
         url_api_endpoint_email_verification=url_email_verification, url_api_endpoint_account_creation=url_account_creation)
