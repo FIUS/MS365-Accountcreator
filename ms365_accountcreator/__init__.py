@@ -34,7 +34,7 @@ for env_var in ENV_VARS:
 
 SECRETS = ['JWT_SECRET_KEY']
 for var in SECRETS:
-    if not var in APP.config:
+    if var not in APP.config or len(APP.config[var]) == 0:
         raise ValueError("The secret " + var + " is not set!")
 
 init_logging(APP)
