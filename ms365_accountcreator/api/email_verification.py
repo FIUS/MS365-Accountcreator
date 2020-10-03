@@ -4,7 +4,10 @@ This module contains all API endpoints for the namespace 'email_verification'
 from typing import Dict
 from flask import request
 from flask_restx import Resource
-from flask_babel import gettext, force_locale
+from flask_babel import gettext
+from flask_babel import refresh as flask_babel_refresh
+from werkzeug.datastructures import LanguageAccept
+
 
 from . import API
 from .api_models import EMAIL_VERIFICATION_POST, EMAIL_VERIFICATION_ANSWER
@@ -27,12 +30,17 @@ class EmailVerification(Resource):
         """
         Verify the email address
         """
-        lang: str = request.headers.get('lang', 'en')
-        with force_locale(lang):
-            email: str = request.get_json()['email']
-            result: Dict = {'valid': True}
-            if not LOGIC.verify_mail_is_legal(email):
-                result = {'valid': False, 'reason': gettext("Email illegal")}
-            elif not LOGIC.verify_mail_has_not_been_used(email):
-                result = {'valid': False, 'reason': gettext("Email already used")}
-            return result
+        if 'lang' in request.headers:
+            # inject language from custom header as first choice into request
+            lang: str = request.headers.get('lang')
+            values = (lang, 10), *request.accept_languages
+            request.accept_languages = LanguageAccept(values)
+            flask_babel_refresh()
+
+        email: str = request.get_json()['email']
+        result: Dict = {'valid': True}
+        if not LOGIC.verify_mail_is_legal(email):
+            result = {'valid': False, 'reason': gettext("Email illegal")}
+        elif not LOGIC.verify_mail_has_not_been_used(email):
+            result = {'valid': False, 'reason': gettext("Email already used")}
+        return result

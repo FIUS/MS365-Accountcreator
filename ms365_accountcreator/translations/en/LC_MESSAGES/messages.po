@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MS365-Accountcreator 1\n"
 "Report-Msgid-Bugs-To: issue tracker\n"
-"POT-Creation-Date: 2020-10-02 22:43+0200\n"
+"POT-Creation-Date: 2020-10-03 13:37+0200\n"
 "PO-Revision-Date: 2020-10-02 15:04+0200\n"
 "Last-Translator: Fabian Bühler <@buehlefs>\n"
 "Language: en\n"
@@ -19,17 +19,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: ms365_accountcreator/api/account_creation.py:40
-#: ms365_accountcreator/api/email_verification.py:35
+#: ms365_accountcreator/api/account_creation.py:48
+#: ms365_accountcreator/api/email_verification.py:43
 msgid "Email illegal"
 msgstr "Email address does not conform the required format"
 
-#: ms365_accountcreator/api/account_creation.py:42
-#: ms365_accountcreator/api/email_verification.py:37
+#: ms365_accountcreator/api/account_creation.py:50
+#: ms365_accountcreator/api/email_verification.py:45
 msgid "Email already used"
 msgstr "The email address was already used to create an account"
 
-#: ms365_accountcreator/api/account_creation.py:44
+#: ms365_accountcreator/api/account_creation.py:52
 msgid "Upstream API error"
 msgstr "Error of an upstream API"
 
@@ -114,14 +114,11 @@ msgstr "Family Name"
 msgid "Create Account"
 msgstr "Create Account"
 
-#: ms365_accountcreator/templates/index.html:94
-#: ms365_accountcreator/templates/index.html:117
-#: ms365_accountcreator/templates/index.html:133
+#: ms365_accountcreator/templates/index.html:96
 msgid "Consent needed"
 msgstr "You must consent before continuing"
 
-#: ms365_accountcreator/templates/index.html:121
-#: ms365_accountcreator/templates/index.html:139
+#: ms365_accountcreator/templates/index.html:124
+#: ms365_accountcreator/templates/index.html:142
 msgid "Consent to both parts needed"
 msgstr "You must consent to both before continuing"
-
