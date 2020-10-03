@@ -6,7 +6,7 @@ class Config(object):
     RESTPLUS_VALIDATE = True
     JWT_CLAIMS_IN_REFRESH_TOKEN = True
     JWT_SECRET_KEY = ''
-    SQLALCHEMY_DATABASE_URI = 'sqlite://:memory:'
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     DB_UNIQUE_CONSTRAIN_FAIL = 'UNIQUE constraint failed'
     URI_BASE_PATH = '/'

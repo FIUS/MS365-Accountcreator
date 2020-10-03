@@ -49,6 +49,13 @@ flask run
 ## Installing in a Production Environment
 See flask wsgi documentation. The preparations as shown above are required.
 
+### Docker
+This project can be deployed using docker with the following command:
+`docker run -p 80:80 -e JWT_SECRET_KEY="put a random secret here" fius/ms365-accountcreator`
+During the first run you need to create the db with `docker exec ms365test pipenv run flask create_db`
+You can mount a host directory into `/app-mnt` to have the database persistent.
+You can alse create the file `ms365-accountcreator.conf` in that directory to configure the application.
+
 
 ## Configuration
 TODO: Fix for flask config

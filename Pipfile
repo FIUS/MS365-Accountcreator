@@ -32,7 +32,6 @@ requests = ">=2,<3"
 msal = ">=0.6.1,<2"
 cryptography = "*"
 six = "*"
-ms365_accountcreator = {editable = true,path = "."}
 flask-babel = "*"
 
 [requires]
