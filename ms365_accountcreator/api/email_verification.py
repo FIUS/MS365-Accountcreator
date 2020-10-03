@@ -30,13 +30,6 @@ class EmailVerification(Resource):
         """
         Verify the email address
         """
-        if 'lang' in request.headers:
-            # inject language from custom header as first choice into request
-            lang: str = request.headers.get('lang')
-            values = (lang, 10), *request.accept_languages
-            request.accept_languages = LanguageAccept(values)
-            flask_babel_refresh()
-
         email: str = request.get_json()['email']
         result: Dict = {'valid': True}
         if not LOGIC.verify_mail_is_legal(email):
