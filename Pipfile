@@ -5,6 +5,7 @@ verify_ssl = true
 
 [scripts]
 flask = "flask"
+create-db = "flask create_db"
 # https://flask-babel.tkte.ch#translating-applications
 babel-extract = "pybabel extract -F babel.cfg -o messages.pot ."
 babel-update = "pybabel update -i messages.pot -d ms365_accountcreator/translations"
