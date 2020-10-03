@@ -24,3 +24,8 @@ ACCOUNT_CREATION_POST = API.model('AccountCreationPOST', {
 EMAIL_VERIFICATION_POST = API.model('EmailVerificationPOST', {
     'email': fields.String(max_length=STD_STRING_SIZE, title="E-Mail to verify")
 })
+
+EMAIL_VERIFICATION_ANSWER = API.model('EmailVerificationGET', {
+    'valid': fields.Boolean(title="Whether the email is valid"),
+    'reason': fields.String(nullable=True, title="If it is invalid, the reason why it is invalid, null if it is valid")
+})

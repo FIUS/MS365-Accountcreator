@@ -1,13 +1,14 @@
 # English translations for MS365-Accountcreator.
 # Copyright (C) 2020
-# This file is distributed under the same license as the MS365-Accountcreator project.
+# This file is distributed under the same license as the
+# MS365-Accountcreator project.
 # Fabian Bühler <@buehlefs>, 2020.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: MS365-Accountcreator 1\n"
 "Report-Msgid-Bugs-To: issue tracker\n"
-"POT-Creation-Date: 2020-10-02 15:04+0200\n"
+"POT-Creation-Date: 2020-10-03 12:42+0200\n"
 "PO-Revision-Date: 2020-10-02 15:04+0200\n"
 "Last-Translator: Fabian Bühler <@buehlefs>\n"
 "Language: en\n"
@@ -19,62 +20,75 @@ msgstr ""
 "Generated-By: Babel 2.8.0\n"
 
 #: ms365_accountcreator/templates/index.html:6
-#: ms365_accountcreator/templates/index.html:15
+#: ms365_accountcreator/templates/index.html:22
 msgid "Account Registration for Microsoft Teams for University of Stuttgart"
 msgstr "Account Registration for Microsoft Teams for University of Stuttgart"
 
-#: ms365_accountcreator/templates/index.html:20
+#: ms365_accountcreator/templates/index.html:27
 msgid "Step 1"
 msgstr "Step 1"
 
-#: ms365_accountcreator/templates/index.html:23
+#: ms365_accountcreator/templates/index.html:30
 msgid "Your st****** email address"
 msgstr "Your st****** email address"
 
-#: ms365_accountcreator/templates/index.html:25
+#: ms365_accountcreator/templates/index.html:32
 msgid "You must use your st******@stud.uni-stuttgart.de email in this field."
 msgstr "You must use your st******@stud.uni-stuttgart.de email in this field."
 
-#: ms365_accountcreator/templates/index.html:30
+#: ms365_accountcreator/templates/index.html:37
 msgid ""
 "I consent that my st****** email is saved to prevent duplicate Account "
 "creation."
-msgstr "I consent that my st****** email is saved to prevent duplicate account creation."
+msgstr ""
+"I consent that my st****** email is saved to prevent duplicate account "
+"creation."
 
-#: ms365_accountcreator/templates/index.html:32
+#: ms365_accountcreator/templates/index.html:39
 msgid "Detailed legal text email"
 msgstr "Detailed legal text email"
 
-#: ms365_accountcreator/templates/index.html:34
-#: ms365_accountcreator/templates/index.html:48
+#: ms365_accountcreator/templates/index.html:41
+#: ms365_accountcreator/templates/index.html:55
 msgid "Next"
 msgstr "Next"
 
-#: ms365_accountcreator/templates/index.html:39
+#: ms365_accountcreator/templates/index.html:46
 msgid "Step 2"
 msgstr "Step 2"
 
-#: ms365_accountcreator/templates/index.html:44
+#: ms365_accountcreator/templates/index.html:51
 msgid "I consent that my Name is used to create an Account for Microsoft Teams."
-msgstr "I consent that my full name is used to create an account for Microsoft Teams."
+msgstr ""
+"I consent that my full name is used to create an account for Microsoft "
+"Teams."
 
-#: ms365_accountcreator/templates/index.html:46
+#: ms365_accountcreator/templates/index.html:53
 msgid "Detailed legal text teams"
 msgstr "Detailed legal text teams"
 
-#: ms365_accountcreator/templates/index.html:53
+#: ms365_accountcreator/templates/index.html:60
 msgid "Step 3"
 msgstr "Step 3"
 
-#: ms365_accountcreator/templates/index.html:56
+#: ms365_accountcreator/templates/index.html:63
 msgid "Name"
 msgstr "Name"
 
-#: ms365_accountcreator/templates/index.html:60
+#: ms365_accountcreator/templates/index.html:67
 msgid "Family Name"
 msgstr "Family Name"
 
-#: ms365_accountcreator/templates/index.html:63
+#: ms365_accountcreator/templates/index.html:70
 msgid "Create Account"
 msgstr "Create Account"
+
+#: ms365_accountcreator/templates/index.html:94
+msgid "Consent needed"
+msgstr "You must consent before continuing"
+
+#: ms365_accountcreator/templates/index.html:121
+#: ms365_accountcreator/templates/index.html:139
+msgid "Consent to both parts needed"
+msgstr "You must consent to both before continuing"
 
