@@ -96,8 +96,11 @@
             }
 
             let email = document.getElementById('input-email').value
-            postData(url_api_endpoint_email_verification, {'email': email}).then(response => {response.json().then(
-                response_data => {
+            postData(url_api_endpoint_email_verification, {'email': email})
+                .then(response => {
+                    return response.json()
+                })
+                .then(response_data => {
                     if (response_data.valid) {
                         document.getElementById('step-1').classList.add('done');
                         const step2 = document.getElementById('step-2');
@@ -106,15 +109,17 @@
                     } else {
                         alert(response_data.reason)
                     }
-                })}
+                }
             );
             return false;
         }
 
         function consentSubmit(event) {
             event.preventDefault();
-            if(! (document.getElementById('input-consent-mail').checked && document.getElementById('input-consent-teams').checked)) {
-                alert("{{ gettext('Consent needed') }}")
+            const mailConsent = document.getElementById('input-consent-mail').checked;
+            const teamsConsent = document.getElementById('input-consent-teams').checked;
+            if(!(mailConsent && teamsConsent)) {
+                alert("{{ gettext('Consent to both parts needed') }}")
                 return false;
             }
 
@@ -129,8 +134,10 @@
 
         function nameSubmit(event) {
             event.preventDefault();
-            if(! (document.getElementById('input-consent-mail').checked && document.getElementById('input-consent-teams').checked)) {
-                alert("{{ gettext('Consent needed') }}")
+            const mailConsent = document.getElementById('input-consent-mail').checked;
+            const teamsConsent = document.getElementById('input-consent-teams').checked;
+            if(!(mailConsent && teamsConsent)) {
+                alert("{{ gettext('Consent to both parts needed') }}")
                 return false;
             }
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MS365-Accountcreator 1\n"
 "Report-Msgid-Bugs-To: issue tracker\n"
-"POT-Creation-Date: 2020-10-02 21:25+0200\n"
+"POT-Creation-Date: 2020-10-03 12:42+0200\n"
 "PO-Revision-Date: 2020-10-02 12:44+0200\n"
 "Last-Translator: Fabian Bühler <@buehlefs>\n"
 "Language: de\n"
@@ -87,8 +87,11 @@ msgid "Create Account"
 msgstr "Account erstellen"
 
 #: ms365_accountcreator/templates/index.html:94
-#: ms365_accountcreator/templates/index.html:117
-#: ms365_accountcreator/templates/index.html:133
 msgid "Consent needed"
 msgstr "Es muss zugestimmt werden um fortfahren zu können"
+
+#: ms365_accountcreator/templates/index.html:121
+#: ms365_accountcreator/templates/index.html:139
+msgid "Consent to both parts needed"
+msgstr "Es muss beide Male zugestimmt werden um fortfahren zu können"
 
