@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MS365-Accountcreator 1\n"
 "Report-Msgid-Bugs-To: issue tracker\n"
-"POT-Creation-Date: 2020-10-03 13:37+0200\n"
+"POT-Creation-Date: 2020-10-03 18:05+0200\n"
 "PO-Revision-Date: 2020-10-02 15:04+0200\n"
 "Last-Translator: Fabian Bühler <@buehlefs>\n"
 "Language: en\n"
@@ -19,17 +19,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: ms365_accountcreator/api/account_creation.py:48
-#: ms365_accountcreator/api/email_verification.py:43
+#: ms365_accountcreator/api/account_creation.py:41
+#: ms365_accountcreator/api/email_verification.py:36
 msgid "Email illegal"
 msgstr "Email address does not conform the required format"
 
-#: ms365_accountcreator/api/account_creation.py:50
-#: ms365_accountcreator/api/email_verification.py:45
+#: ms365_accountcreator/api/account_creation.py:43
+#: ms365_accountcreator/api/email_verification.py:38
 msgid "Email already used"
 msgstr "The email address was already used to create an account"
 
-#: ms365_accountcreator/api/account_creation.py:52
+#: ms365_accountcreator/api/account_creation.py:45
 msgid "Upstream API error"
 msgstr "Error of an upstream API"
 
@@ -114,11 +114,34 @@ msgstr "Family Name"
 msgid "Create Account"
 msgstr "Create Account"
 
-#: ms365_accountcreator/templates/index.html:96
-msgid "Consent needed"
-msgstr "You must consent before continuing"
+#: ms365_accountcreator/templates/index.html:74
+msgid "Result"
+msgstr "Result"
 
-#: ms365_accountcreator/templates/index.html:124
-#: ms365_accountcreator/templates/index.html:142
-msgid "Consent to both parts needed"
-msgstr "You must consent to both before continuing"
+#: ms365_accountcreator/templates/index.html:76
+msgid "Awaiting API response:"
+msgstr "Awaiting API response"
+
+#: ms365_accountcreator/templates/index.html:172
+msgid ""
+"Your account was successfully created and an email with the password will"
+" be sent to your specified st****** email."
+msgstr ""
+"Your account was successfully created. An email withyour account data and"
+" the password will be sent to your specified st****** email."
+
+#: ms365_accountcreator/templates/index.html:184
+#: ms365_accountcreator/templates/index.html:191
+msgid ""
+"There was an error creating your account. Please try again later or "
+"contact the administrator of this site."
+msgstr ""
+"There was an error creating your account. Please try again later or "
+"contact the administrator of this site."
+
+#~ msgid "Consent needed"
+#~ msgstr "You must consent before continuing"
+
+#~ msgid "Consent to both parts needed"
+#~ msgstr "You must consent to both before continuing"
+
