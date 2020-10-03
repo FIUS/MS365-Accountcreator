@@ -41,11 +41,6 @@ class Config(object):
     MAIL_SERVER_PW = ""
     MAIL_SENDING_ADDRESS = ""
 
-    REGISTRATION_MAIL_SUBJECT = "Welcome"
-    REGISTRATION_MAIL_BODY = "Hi, \n\nyour registartion was successfull. \n" \
-                             "You can now log in using your user {} and your password {}. \n" \
-                             "\nRegards \nYour admins"
-
 class ProductionConfig(Config):
     pass
 

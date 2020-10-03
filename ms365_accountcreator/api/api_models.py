@@ -16,12 +16,14 @@ ROOT_MODEL = API.model('RootModel', {
 })
 
 ACCOUNT_CREATION_POST = API.model('AccountCreationPOST', {
+    'lang': fields.String(optional=True, default="en", title="The language to use for the response"),
     'first_name': fields.String(title="First name of the user"),
     'last_name': fields.String(title="Last name of the user"),
     'email': fields.String(max_length=STD_STRING_SIZE, title="E-Mail to send the password to")
 })
 
 EMAIL_VERIFICATION_POST = API.model('EmailVerificationPOST', {
+    'lang': fields.String(optional=True, default="en", title="The language to use for the response"),
     'email': fields.String(max_length=STD_STRING_SIZE, title="E-Mail to verify")
 })
 
