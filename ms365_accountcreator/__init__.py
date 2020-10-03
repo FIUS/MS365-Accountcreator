@@ -11,6 +11,7 @@ from sqlalchemy.schema import MetaData
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from .logging import init_logging, get_logging
 
@@ -28,9 +29,19 @@ APP.config.from_pyfile('ms365_accountcreator.conf', silent=True)
 if 'CONFIG_FILE' in environ:
     APP.config.from_pyfile(environ.get('CONFIG_FILE', 'ms365_accountcreator.conf'), silent=True)
 
-ENV_VARS = ['SQLALCHEMY_DATABASE_URI', 'JWT_SECRET_KEY']
+ENV_VARS = ['SQLALCHEMY_DATABASE_URI', 'JWT_SECRET_KEY', 'REVERSE_PROXY_COUNT']
 for env_var in ENV_VARS:
-    APP.config[env_var] = environ.get(env_var, APP.config.get(env_var))
+    value = environ.get(env_var, APP.config.get(env_var))
+    if value is None:
+        pass
+    elif value.lower() == "true":
+        value = True
+    elif value.lower() == "false":
+        value = False
+    elif value.isnumeric():
+        value = int(value)
+    APP.config[env_var] = value
+
 
 SECRETS = ['JWT_SECRET_KEY']
 for var in SECRETS:
@@ -38,6 +49,10 @@ for var in SECRETS:
         raise ValueError("The secret " + var + " is not set!")
 
 init_logging(APP)
+
+r_p_count = APP.config['REVERSE_PROXY_COUNT']
+if r_p_count > 0:
+    APP.wsgi_app = ProxyFix(APP.wsgi_app, x_for=r_p_count, x_host=r_p_count, x_port=r_p_count, x_prefix=r_p_count, x_proto=r_p_count)
 
 APP_LOGGER = get_logging().APP_LOGGER
 
