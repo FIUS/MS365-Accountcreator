@@ -21,6 +21,17 @@
         </div>
         <h1>{{ gettext('Account Registration for Microsoft Teams for University of Stuttgart') }}</h1>
     </div>
+
+    <!-- Display a warning for all users still browing with IE because form validation will not work for them -->
+    <!--[if IE]>
+        <div>
+            <h2>{{ gettext('Internet Explorer is NOT supported!') }}</h2>
+            <p>{{ gettext('Please use a recent Firefox, Chrome, Edge or Safari browser to access this site!') }}</p>
+        </div>
+    <![endif]-->
+
+    <!-- Hide actial content for all users still browing with IE because form validation will not work for them -->
+    <![if !IE]>
     <div class="form-container">
         <!-- Email Form -->
         <details id="step-1" open>
@@ -33,6 +44,7 @@
                 </div>
                 <div class="form-field">
                     <label for="input-consent-mail">
+                        <!-- Consent checkboxes MUST be marked as required! -->
                         <input id="input-consent-mail" name="checkbox" aria-describedby="input-consent-mail-note" type="checkbox" required>
                         {{ gettext('I consent that my st****** email is saved to prevent duplicate Account creation.') }}
                     </label>
@@ -47,6 +59,7 @@
             <form id="consent-form" class="details-content" onsubmit="return consentSubmit(event);">
                 <div class="form-field">
                     <label for="input-consent-teams">
+                        <!-- Consent checkboxes MUST be marked as required! -->
                         <input id="input-consent-teams" name="checkbox" aria-describedby="input-consent-teams-note" type="checkbox" required>
                         {{ gettext('I consent that my Name is used to create an Account for Microsoft Teams.') }}
                     </label>
@@ -78,6 +91,7 @@
             </div>
         </details>
     </div>
+    <![endif]>
 
     <script>
         const url_api_endpoint_email_verification = "{{url_api_endpoint_email_verification}}"
@@ -100,7 +114,8 @@
         function emailSubmit(event) {
             event.preventDefault();
 
-            let email = document.getElementById('input-email').value
+            const email = document.getElementById('input-email').value;
+
             postData(url_api_endpoint_email_verification, {'email': email})
                 .then(response => {
                     return response.json()
@@ -122,7 +137,8 @@
         function consentSubmit(event) {
             event.preventDefault();
 
-            if (!document.getElementById('email-form').reportValidity()) {
+            const emailForm = document.getElementById('email-form');
+            if (!(emailForm.reportValidity() || emailForm.checkValidity())) {
                 return;
             }
 
@@ -138,11 +154,13 @@
         function nameSubmit(event) {
             event.preventDefault();
 
-            if (!document.getElementById('email-form').reportValidity()) {
+            const emailForm = document.getElementById('email-form');
+            if (!(emailForm.reportValidity() || emailForm.checkValidity())) {
                 return;
             }
 
-            if (!document.getElementById('consent-form').reportValidity()) {
+            const consentForm = document.getElementById('consent-form');
+            if (!(consentForm.reportValidity() || consentForm.checkValidity())) {
                 return;
             }
 
