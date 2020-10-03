@@ -21,3 +21,5 @@ ENV STATIC_PATH /app/ms365_accountcreator/static
 ENV FLASK_APP ms365_accountcreator
 ENV MODE production
 ENV CONFIG_FILE /app-mnt/ms365_accountcreator.conf
+
+RUN pipenv run babel-compile
