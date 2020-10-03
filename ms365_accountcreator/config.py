@@ -41,6 +41,8 @@ class Config(object):
     MAIL_SERVER_PW = ""
     MAIL_SENDING_ADDRESS = ""
 
+    SUPPORT_EMAIL = ""
+
 class ProductionConfig(Config):
     pass
 

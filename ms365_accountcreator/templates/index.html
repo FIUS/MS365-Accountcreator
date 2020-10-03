@@ -33,6 +33,13 @@
     <!-- Hide actial content for all users still browing with IE because form validation will not work for them -->
     <![if !IE]>
     <div class="form-container">
+        <!-- Explanation -->
+        <details id="step-0" open>
+            <summary>{{ gettext('Step 0') }}</summary>
+            <div>
+                {{ gettext('Explanation and statement containing %(support)s', support=support_email)}}
+            </div>
+        </details>
         <!-- Email Form -->
         <details id="step-1" open>
             <summary>{{ gettext('Step 1') }}</summary>
