@@ -1,6 +1,6 @@
 
 # Project specific files
-ms365_accountcreator.conf
+instance/*
 
 # VS code IDE folder
 .vscode
