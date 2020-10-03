@@ -99,10 +99,6 @@
 
         function emailSubmit(event) {
             event.preventDefault();
-            if(! document.getElementById('input-consent-mail').checked) {
-                alert("{{ gettext('Consent needed') }}")
-                return false;
-            }
 
             let email = document.getElementById('input-email').value
             postData(url_api_endpoint_email_verification, {'email': email})
