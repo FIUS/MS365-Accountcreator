@@ -67,8 +67,15 @@
                     <label for="input-family-name">{{ gettext('Family Name') }}</label>
                     <input id="input-family-name" name="first" type="text" autocomplete="family-name" placeholder=" " required>
                 </div>
-                <input type="submit" name="submit" value="{{ gettext('Create Account') }}">
+                <input id="name-form-submit" type="submit" name="submit" value="{{ gettext('Create Account') }}">
             </form>
+        </details>
+        <details id="step-result" class="inactive">
+            <summary>{{ gettext('Result') }}</summary>
+            <div class="details-content">
+                <p id="result-spinner" class="spinner">{{ gettext('Awaiting API response:')}}</p>
+                <p id="result-text" hidden></p>
+            </div>
         </details>
     </div>
 
@@ -118,11 +125,9 @@
 
         function consentSubmit(event) {
             event.preventDefault();
-            const mailConsent = document.getElementById('input-consent-mail').checked;
-            const teamsConsent = document.getElementById('input-consent-teams').checked;
-            if(!(mailConsent && teamsConsent)) {
-                alert("{{ gettext('Consent to both parts needed') }}")
-                return false;
+
+            if (!document.getElementById('email-form').reportValidity()) {
+                return;
             }
 
             document.getElementById('step-2').classList.add('done');
@@ -136,27 +141,60 @@
 
         function nameSubmit(event) {
             event.preventDefault();
-            const mailConsent = document.getElementById('input-consent-mail').checked;
-            const teamsConsent = document.getElementById('input-consent-teams').checked;
-            if(!(mailConsent && teamsConsent)) {
-                alert("{{ gettext('Consent to both parts needed') }}")
-                return false;
+
+            if (!document.getElementById('email-form').reportValidity()) {
+                return;
             }
 
-            let first_name = document.getElementById('input-first-name').value
-            let last_name = document.getElementById('input-family-name').value
-            let email = document.getElementById('input-email').value
+            if (!document.getElementById('consent-form').reportValidity()) {
+                return;
+            }
+
+            // open result tab
+            const stepResult = document.getElementById('step-result');
+            stepResult.classList.remove('inactive');
+            stepResult.setAttribute('open', '');
+
+            const first_name = document.getElementById('input-first-name').value
+            const last_name = document.getElementById('input-family-name').value
+            const email = document.getElementById('input-email').value
+
+            const nameFormSubmit = document.getElementById('name-form-submit');
+            const resultSpinner = document.getElementById('result-spinner');
+            const resultText = document.getElementById('result-text');
+
+            nameFormSubmit.disabled = true;
+            resultSpinner.hidden = false;
+            resultText.hidden = true;
+
             postData(url_api_endpoint_account_creation, {'first_name': first_name, 'last_name': last_name, 'email': email}).then(
                 response => {
                     if(response.ok) {
                         document.getElementById('step-3').classList.add('done');
+
+                        resultSpinner.hidden = true;
+                        resultText.textContent = '{{ gettext("Your account was successfully created and an email with the password will be sent to your specified st****** email.") }}';
+                        resultText.hidden = false;
                     } else {
                         response.json().then(
-                            response_data => {
-                                alert(response_data.message);
+                            responseData => {
+                                resultSpinner.hidden = true;
+                                resultText.textContent = responseData.message;
+                                resultText.hidden = false;
+                                nameFormSubmit.disabled = false;
                             }
-                        );
+                        ).catch(() => {
+                            resultSpinner.hidden = true;
+                            resultText.textContent = '{{ gettext("There was an error creating your account. Please try again later or contact the administrator of this site.") }}';
+                            resultText.hidden = false;
+                            nameFormSubmit.disabled = false
+                        });
                     }
+                }).catch(() => {
+                    resultSpinner.hidden = true;
+                    resultText.textContent = '{{ gettext("There was an error creating your account. Please try again later or contact the administrator of this site.") }}';
+                    resultText.hidden = false;
+                    nameFormSubmit.disabled = false
                 });
 
             return false;
