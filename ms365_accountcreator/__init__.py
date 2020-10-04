@@ -4,8 +4,6 @@ ms365_accountcreator init file.
 from os import environ
 from os.path import abspath
 
-from numbers import Number
-
 from flask import Flask, request
 from flask_babel import Babel
 from flask_sqlalchemy import SQLAlchemy
@@ -15,6 +13,7 @@ from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from werkzeug.middleware.proxy_fix import ProxyFix
 
+from .config import coerce_value_to
 from .logging import init_logging, get_logging
 
 APP = Flask(__name__, instance_relative_config=True)  # type: Flask
@@ -31,20 +30,10 @@ APP.config.from_pyfile('ms365_accountcreator.conf', silent=True)
 if 'CONFIG_FILE' in environ:
     APP.config.from_pyfile(environ.get('CONFIG_FILE', 'ms365_accountcreator.conf'), silent=True)
 
-ENV_VARS = ['SQLALCHEMY_DATABASE_URI', 'JWT_SECRET_KEY', 'REVERSE_PROXY_COUNT']
-for env_var in ENV_VARS:
+ENV_VARS = [('SQLALCHEMY_DATABASE_URI', str), ('JWT_SECRET_KEY', str), ('REVERSE_PROXY_COUNT', int)]
+for env_var, target_type in ENV_VARS:
     value = environ.get(env_var, APP.config.get(env_var))
-    if value is None:
-        pass
-    elif isinstance(value, Number):
-        pass
-    elif value.lower() == "true":
-        value = True
-    elif value.lower() == "false":
-        value = False
-    elif value.isnumeric():
-        value = int(value)
-    APP.config[env_var] = value
+    APP.config[env_var] = coerce_value_to(value, target_type)
 
 
 SECRETS = ['JWT_SECRET_KEY']

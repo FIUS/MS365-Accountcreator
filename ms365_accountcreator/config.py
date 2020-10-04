@@ -1,5 +1,9 @@
 """Module containing default config values."""
 
+from typing import Union, Type
+from numbers import Number
+
+
 class Config(object):
     DEBUG = False
     TESTING = False
@@ -60,3 +64,34 @@ class DebugConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
+
+
+def coerce_value_to(value: Union[str, Number, bool], target_type: Union[Type[str], Type[Number], Type[bool], Type[int], Type[float]]):
+    """Coearce a config value to the given target type if possible."""
+    if isinstance(value, target_type):
+        return value
+    if target_type == bool:
+        if isinstance(value, Number):
+            return bool(value)
+        if isinstance(value, str):
+            return value.lower() == 'true' # assume anything not 'true' as false
+        if value is None:
+            return None
+    if target_type == Number or target_type == float:
+        if isinstance(value, bool):
+            return 1 if value else 0
+        if isinstance(value, str):
+            if value.isdecimal():
+                return int(value)
+            else:
+                try:
+                    return float(value)
+                except ValueError as exc:
+                    raise ValueError(f'Could not coerce {value} to float.') from exc
+    if target_type == int:
+        if isinstance(value, bool):
+            return 1 if value else 0
+        if isinstance(value, str):
+            if value.isdecimal():
+                return int(value)
+    raise ValueError(f'Could not coerce {value} to {target_type}.')
