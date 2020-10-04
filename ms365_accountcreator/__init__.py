@@ -16,7 +16,7 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 from .logging import init_logging, get_logging
 
 APP = Flask(__name__, instance_relative_config=True)  # type: Flask
-APP.config['MODE'] = environ['MODE'].upper()
+APP.config['MODE'] = environ.get('MODE', 'PRODUCTION').upper()
 if APP.config['MODE'] == 'PRODUCTION':
     APP.config.from_object('ms365_accountcreator.config.ProductionConfig')
 elif APP.config['MODE'] == 'DEBUG':

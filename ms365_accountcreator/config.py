@@ -18,11 +18,12 @@ class Config(object):
     JSONIFY_PRETTYPRINT_REGULAR = False
     RESTPLUS_JSON = {'indent': None}
 
-    DEBUG_DONT_CONNECT_TO_API=False
+    DEBUG_DONT_CONNECT_TO_API = False
 
     GENERATED_PASSWORD_BYTES = 8
 
-    # Regex as defined by https://docs.python.org/3/library/re.html
+    # Should be regex compatible with https://docs.python.org/3/library/re.html
+    # as well as https://www.w3schools.com/TAGS/att_input_pattern.asp
     EMAIL_ADDRESS_FILTER = ".*"
 
     GRAPH_API_AUTH_AUTHORITY = "https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000"
@@ -53,7 +54,7 @@ class DebugConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/test.db'
     JWT_SECRET_KEY = 'debug'
 
-    DEBUG_DONT_CONNECT_TO_API=True
+    DEBUG_DONT_CONNECT_TO_API = True
 
     LOGGING_CONFIGS = ['logging_config.json', 'logging_config_debug.json']
 
