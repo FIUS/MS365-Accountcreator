@@ -39,12 +39,13 @@ body {
     width: calc(70% - 2ch);
     min-width: 20ch;
     max-width: 70ch;
+    margin-top: 2rem;
 }
 
 .form-container {
     width: calc(50% - 2ch);
-    min-width: 20ch;
-    max-width: 50ch;
+    min-width: 35ch;
+    max-width: 60ch;
 
     display: flex;
     flex-direction: column;
