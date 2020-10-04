@@ -128,6 +128,9 @@
                     return response.json()
                 })
                 .then(response_data => {
+                    if ((! "valid" in response_data) || (! "reason" in response_data)) {
+                        throw "Data format invalid"
+                    }
                     if (response_data.valid) {
                         document.getElementById('step-1').classList.add('done');
                         const step2 = document.getElementById('step-2');
@@ -136,8 +139,10 @@
                     } else {
                         alert(response_data.reason)
                     }
-                }
-            );
+                })
+                .catch(() => {
+                    alert("{{ gettext('There was an error while connecting to the server. Please try again later or contact the administrator of this site.') }}")
+            });
             return false;
         }
 
@@ -199,6 +204,9 @@
                     } else {
                         response.json().then(
                             responseData => {
+                                if (! "message" in response_data) {
+                                    throw "Data format invalid"
+                                }
                                 resultSpinner.hidden = true;
                                 resultText.textContent = responseData.message;
                                 resultText.hidden = false;
