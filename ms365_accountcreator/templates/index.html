@@ -46,7 +46,7 @@
             <form id="email-form" class="details-content" onsubmit="return emailSubmit(event);">
                 <div class="form-field">
                     <label for="input-email">{{ gettext('Your st****** email address') }}</label>
-                    <input id="input-email" name="email" aria-describedby="input-email-note" type="email" placeholder="st******@stud.uni-stuttgart.de" pattern="{{email_regex}}" required>
+                    <input id="input-email" name="email" aria-describedby="input-email-note" type="email" placeholder="{{ gettext('st******@stud.uni-stuttgart.de') }}" pattern="{{email_regex}}" required>
                     <span id="input-email-note" class="form-field-description">{{ gettext('You must use your st******@stud.uni-stuttgart.de email in this field.') }}</span>
                 </div>
                 <div class="form-field">

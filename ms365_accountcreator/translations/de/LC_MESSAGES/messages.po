@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MS365-Accountcreator 1\n"
 "Report-Msgid-Bugs-To: issue tracker\n"
-"POT-Creation-Date: 2020-10-04 13:51+0200\n"
+"POT-Creation-Date: 2020-10-04 16:48+0200\n"
 "PO-Revision-Date: 2020-10-02 12:44+0200\n"
 "Last-Translator: Fabian Bühler <@buehlefs>\n"
 "Language: de\n"
@@ -45,7 +45,8 @@ msgstr ""
 "\n"
 "deine Registration war erfolgreich.\n"
 "Du kannst dich jetzt mit deinem Nutzer %(username)s und deinem Passwort "
-"%(password)s einloggen. \n"
+"%(password)s unter <a "
+"href='htttps://teams.microsoft.com'>teams.microsoft.com</a> einloggen. \n"
 "\n"
 "Grüße \n"
 "Die Admins"
@@ -57,13 +58,15 @@ msgstr "Account Registrierung für Microsoft Teams an der Universität Stuttgart
 
 #: ms365_accountcreator/templates/index.html:28
 msgid "Internet Explorer is NOT supported!"
-msgstr ""
+msgstr "Der Internet Explorer wird NICHT unterstützt!"
 
 #: ms365_accountcreator/templates/index.html:29
 msgid ""
 "Please use a recent Firefox, Chrome, Edge or Safari browser to access "
 "this site!"
 msgstr ""
+"Bitte nutze einen aktuellen Firefox, Chrome, Edge oder Safari Browser um "
+"dise Seite zu verwenden!"
 
 #: ms365_accountcreator/templates/index.html:38
 msgid "Step 0"
@@ -75,12 +78,15 @@ msgid "Explanation and statement containing %(support)s"
 msgstr ""
 "Dieses Jahr benutzt der Fachbereich Informatik Microsoft Teams um die "
 "Online Lehre zu verbessern. \n"
-"Für das Beste Ergebnis, ist es sinvoll, dass Studierende eine Microsoft "
-"account in der Struktur des Fachbereichs haben. \n"
+"Für das beste Ergebnis, ist es sinvoll, dass Studierende eine Microsoft "
+"Account in der Struktur des Fachbereichs haben. \n"
 "Um das zu erleichtern haben wir dieses kleine Tool entwickelt, welches "
-"automatisch solche Accounts erstellt. \n"
+"automatisch solche Accounts für unsere Microsoft 365 Edu-A1 Lizenz "
+"erzeugt. \n"
 "Wenn du Fragen hast wende dich bitte an <a "
-"href=mailto:%(support)s>%(support)s</a>."
+"href=mailto:%(support)s>%(support)s</a>. \n"
+"Um die unten erteilte Zustimmung zur Verarbeitung von Daten zu widerrufen"
+" wende dich bitte auch an diese Addresse."
 
 #: ms365_accountcreator/templates/index.html:45
 msgid "Step 1"
@@ -89,6 +95,10 @@ msgstr "Schritt 1"
 #: ms365_accountcreator/templates/index.html:48
 msgid "Your st****** email address"
 msgstr "Deine st****** E-Mail Adresse"
+
+#: ms365_accountcreator/templates/index.html:49
+msgid "st******@stud.uni-stuttgart.de"
+msgstr ""
 
 #: ms365_accountcreator/templates/index.html:50
 msgid "You must use your st******@stud.uni-stuttgart.de email in this field."
@@ -101,13 +111,18 @@ msgid ""
 "I consent that my st****** email is saved to prevent duplicate Account "
 "creation."
 msgstr ""
-"Ich stimme zu, dass meine st****** E-Mail Adresse gespeichert wird um zu "
-"verhindern, das mehrere Accounts für einen Student angelegt werden "
-"können."
+"Ich stimme zu, dass meine eingegebene st****** E-Mail Adresse verarbeitet"
+" und gespeichert wird um das generierte Passwort zu verschicken und um "
+"sicherzustellen, dass maximal ein Account pro Studi angelegt wird. Mir "
+"ist bewusst, dass ich diese Zustimmung widerrufen und die Löschung der "
+"Daten veranlassen kann."
 
 #: ms365_accountcreator/templates/index.html:58
 msgid "Detailed legal text email"
-msgstr "TODO Detailed legal text email"
+msgstr ""
+"Die Email Addresse wird ausschließlich auf Servern Fachbereichs und/oder "
+"der Fachgruppe Informatik verarbeitet und gespeichert. Die Email Addresse"
+" wird nicht an Microsoft übertragen."
 
 #: ms365_accountcreator/templates/index.html:60
 #: ms365_accountcreator/templates/index.html:75
@@ -121,12 +136,21 @@ msgstr "Schritt 2"
 #: ms365_accountcreator/templates/index.html:71
 msgid "I consent that my Name is used to create an Account for Microsoft Teams."
 msgstr ""
-"Ich stimme zu, dass mein vollständiger Name benutzt wird um einen Account"
-" für Microsoft Teams zu erstellen."
+"Ich stimme zu, dass mein eingegebener vollständiger Name benutzt wird um "
+"einen Account für Microsoft Teams zu erstellen und dazu an Microsoft "
+"übertragen wird um dort verarbeitet und gespeichert zu werden. Mir ist "
+"bewusst, dass ich diese Zustimmung widerrufen und die Löschung der Daten "
+"veranlassen kann. "
 
 #: ms365_accountcreator/templates/index.html:73
 msgid "Detailed legal text teams"
-msgstr "TODO Detailed legal text teams"
+msgstr ""
+"Der Name wird einmalig auf Servern Fachbereichs und/oder der Fachgruppe "
+"Informatik verarbeitet und dann direkt an die Server von Microsoft "
+"gesendet.Diese speichern und verarbeiten diese Daten und alle Daten die "
+"im Zusammenhang mit dem Account anfallen mindestens bis zur Löschung des "
+"Accounts. Weitere Infoskönnen https://privacy.microsoft.com/de-"
+"de/privacystatement entnommen werden."
 
 #: ms365_accountcreator/templates/index.html:80
 msgid "Step 3"
@@ -152,20 +176,24 @@ msgstr "Ergebnis"
 msgid "Awaiting API response:"
 msgstr "Warte auf Antwort der API"
 
-#: ms365_accountcreator/templates/index.html:141
-msgid "There was an error while connecting to the server. Please try again later or contact the administrator of this site."
-msgstr "Es gab einen error beim Verbinden mit dem Server. Bitte versuche es später erneut oder kontaktiere den Support."
+#: ms365_accountcreator/templates/index.html:144
+msgid ""
+"There was an error while connecting to the server. Please try again later"
+" or contact the administrator of this site."
+msgstr ""
+"Es gab einen Error beim Verbinden mit dem Server. Bitte versuche es "
+"später erneut oder kontaktiere den Support."
 
-#: ms365_accountcreator/templates/index.html:199
+#: ms365_accountcreator/templates/index.html:202
 msgid ""
 "Your account was successfully created and an email with the password will"
 " be sent to your specified st****** email."
 msgstr ""
 "Dein Account wurde erfolgreich erstellt. Eine E-Mail mit den Accountdaten"
-" und deinem Passwort wird an die angegebene st****** E-Mal gesendet."
+" wird an die angegebene st****** E-Mal gesendet."
 
-#: ms365_accountcreator/templates/index.html:211
-#: ms365_accountcreator/templates/index.html:218
+#: ms365_accountcreator/templates/index.html:217
+#: ms365_accountcreator/templates/index.html:224
 msgid ""
 "There was an error creating your account. Please try again later or "
 "contact the administrator of this site."
