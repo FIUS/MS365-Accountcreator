@@ -4,6 +4,8 @@ ms365_accountcreator init file.
 from os import environ
 from os.path import abspath
 
+from numbers import Number
+
 from flask import Flask, request
 from flask_babel import Babel
 from flask_sqlalchemy import SQLAlchemy
@@ -33,6 +35,8 @@ ENV_VARS = ['SQLALCHEMY_DATABASE_URI', 'JWT_SECRET_KEY', 'REVERSE_PROXY_COUNT']
 for env_var in ENV_VARS:
     value = environ.get(env_var, APP.config.get(env_var))
     if value is None:
+        pass
+    elif isinstance(value, Number):
         pass
     elif value.lower() == "true":
         value = True
