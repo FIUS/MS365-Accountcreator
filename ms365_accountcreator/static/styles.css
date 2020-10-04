@@ -14,7 +14,10 @@ body {
 }
 
 .title {
+    width: 100%;
+
     font-size: 4vmin;
+    font-size: clamp(1rem, 4vmin, 4rem);
     color: #333;
     background-color: #00BEFF;
     background: #00BEFF;

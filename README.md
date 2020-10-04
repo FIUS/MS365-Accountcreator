@@ -2,7 +2,7 @@
 A small python flask server to allow users to sign up to a Microsoft Azure Tenant using the Microsoft Graph API.
 
 [![Open source](https://img.shields.io/badge/OpenSource-github-green.svg)](https://github.com/FIUS/MS365-Accountcreator)
-[![GitHub license](https://img.shields.io/github/license/FIUS/MS365-Accountcreator.svg)](https://github.com/MS365-Accountcreator/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/github/license/FIUS/MS365-Accountcreator.svg)](https://github.com/FIUS/MS365-Accountcreator/blob/master/LICENSE)
 [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/fius/ms365-accountcreator)](https://hub.docker.com/r/fius/ms365-accountcreator)
 
 ## Installation
@@ -33,6 +33,14 @@ The container is based on [tiangolo/uwsgi-nginx-flask-docker](https://github.com
 This project can run behind a reverse proxy with the help of [ProxyFix](https://werkzeug.palletsprojects.com/en/1.0.x/middleware/proxy_fix/). \
 ProxyFix uses the headers set by the reverseproxy to adjust the wsgi environment accordingly. For more info visit their website. \
 The number of trusted reverse proxies can be configured using the [REVERSE_PROXY_COUNT](#reverse_proxy_count) config or environment variable.
+
+### Custom UI texts
+If you want to deploy this project but use your own translations, follow the steps detailed in [Changing translations](#changing-translations). \
+Note: You need to setup the development environment as detailed in [Development](#development) for this.
+
+Then just replace the existing `messages.mo` files with the ones you generated.
+
+For deployment with a docker container this may be done by mounting an external directory over `/app/translations`.
 
 ## Configuration
 The confuration is done through flask. \
@@ -217,3 +225,13 @@ Then everything is set up for you and you only need to start the server:
 ```shell
 flask run
 ```
+
+### Managing translations
+The translations are used by [flask-babel](https://flask-babel.tkte.ch/) to be able to show the user translated texts. It uses [babel](http://babel.pocoo.org/en/latest/) and [gettext](https://docs.python.org/3/library/gettext.html) under the hood.
+
+#### Changing translations
+To change a translation go to [translations](ms365_accountcreator/translations/), find the langauge to change, go to `LC_MESSAGES` and edit `messages.po`.
+After editing `messages.po` run the command `pipenv run babel-compile` to recompile the translations, so the updated version can be used. 
+
+#### Adding translations
+When you want to add new texts to be translated, just use the `gettext()` method with an appropriate argument and run `pipenv run babel-extract` and `pipenv run babel-update`. This will update the `messages.po` files for all langauges. Then follow the steps in [Changing translations](#changing-translations) to add a translation for the new text to each language.

@@ -1,0 +1,43 @@
+{
+    "version": 1,
+    "formatters": {
+        "extended": {
+            "format": "%(asctime)s [%(levelname)s] [%(name)-16s] %(message)s <%(module)s, %(funcName)s, %(lineno)s; %(pathname)s>"
+        },
+        "short": {
+            "format": "[%(asctime)s] [%(levelname)s] [%(name)-16s] %(message)s"
+        }
+    },
+    "handlers": {
+        "default": {
+            "class": "logging.StreamHandler",
+            "formatter": "extended"
+        },
+        "short": {
+            "class": "logging.StreamHandler",
+            "formatter": "short"
+        }
+    },
+    "loggers": {
+        "flask.app.auth": {
+            "level": 20,
+            "propagate": false,
+            "handlers": ["short"]
+        },
+        "flask.app.db": {
+            "level": 30,
+            "propagate": false,
+            "handlers": ["short"]
+        },
+        "sqlalchemy": {
+            "level": 30,
+            "propagate": false,
+            "handlers": ["short"]
+        }
+    },
+    "root": {
+        "level": 30,
+        "handlers": ["default"]
+    },
+    "disable_existing_loggers": true
+}

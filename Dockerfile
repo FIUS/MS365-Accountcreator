@@ -14,7 +14,7 @@ RUN mkdir /app-mnt
 
 COPY docker/uwsgi.ini /app/
 COPY docker/ms365_accountcreator.conf /app/instance
-COPY logging_config.json /app/
+COPY docker/logging_config.json /app/
 COPY ms365_accountcreator /app/ms365_accountcreator
 
 ENV STATIC_PATH /app/ms365_accountcreator/static
