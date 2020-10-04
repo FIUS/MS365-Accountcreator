@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MS365-Accountcreator 1\n"
 "Report-Msgid-Bugs-To: issue tracker\n"
-"POT-Creation-Date: 2020-10-03 21:47+0200\n"
+"POT-Creation-Date: 2020-10-04 13:51+0200\n"
 "PO-Revision-Date: 2020-10-02 15:04+0200\n"
 "Last-Translator: Fabian Bühler <@buehlefs>\n"
 "Language: en\n"
@@ -70,11 +70,17 @@ msgid "Step 0"
 msgstr "Introduction"
 
 #: ms365_accountcreator/templates/index.html:40
+#, python-format
 msgid "Explanation and statement containing %(support)s"
-msgstr "This year the computer science departement uses Microsoft Teams to help to improve the online teaching. \n"
-"For the best results, it is a good idea for students to have a Microsoft account in the directory of the departement. \n"
-"To make it easier, we created this small tool to automatically create these accounts. \n"
-"If you have any questions please contact <a href=mailto:%(support)s>%(support)s</a>. "
+msgstr ""
+"This year the computer science departement uses Microsoft Teams to help "
+"to improve the online teaching. \n"
+"For the best results, it is a good idea for students to have a Microsoft "
+"account in the directory of the departement. \n"
+"To make it easier, we created this small tool to automatically create "
+"these accounts. \n"
+"If you have any questions please contact <a "
+"href=mailto:%(support)s>%(support)s</a>. "
 
 #: ms365_accountcreator/templates/index.html:45
 msgid "Step 1"
@@ -143,7 +149,11 @@ msgstr "Result"
 msgid "Awaiting API response:"
 msgstr "Awaiting API response"
 
-#: ms365_accountcreator/templates/index.html:197
+#: ms365_accountcreator/templates/index.html:141
+msgid "There was an error while connecting to the server. Please try again later or contact the administrator of this site."
+msgstr "There was an error while connecting to the server. Please try again later or contact the support."
+
+#: ms365_accountcreator/templates/index.html:199
 msgid ""
 "Your account was successfully created and an email with the password will"
 " be sent to your specified st****** email."
@@ -151,14 +161,14 @@ msgstr ""
 "Your account was successfully created. An email withyour account data and"
 " the password will be sent to your specified st****** email."
 
-#: ms365_accountcreator/templates/index.html:209
-#: ms365_accountcreator/templates/index.html:216
+#: ms365_accountcreator/templates/index.html:211
+#: ms365_accountcreator/templates/index.html:218
 msgid ""
 "There was an error creating your account. Please try again later or "
 "contact the administrator of this site."
 msgstr ""
 "There was an error creating your account. Please try again later or "
-"contact the administrator of this site."
+"contact the support."
 
 #~ msgid "Consent needed"
 #~ msgstr "You must consent before continuing"
