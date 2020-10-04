@@ -113,16 +113,16 @@ msgid ""
 msgstr ""
 "Ich stimme zu, dass meine eingegebene st****** E-Mail Adresse verarbeitet"
 " und gespeichert wird um das generierte Passwort zu verschicken und um "
-"sicherzustellen, dass maximal ein Account pro Studi angelegt wird. Mir "
+"sicherzustellen, dass maximal ein Account pro Student*in angelegt wird. Mir "
 "ist bewusst, dass ich diese Zustimmung widerrufen und die Löschung der "
-"Daten veranlassen kann."
+"Daten veranlassen kann (über die oben genannte Support Email Addresse)."
 
 #: ms365_accountcreator/templates/index.html:58
 msgid "Detailed legal text email"
 msgstr ""
-"Die Email Addresse wird ausschließlich auf Servern Fachbereichs und/oder "
-"der Fachgruppe Informatik verarbeitet und gespeichert. Die Email Addresse"
-" wird nicht an Microsoft übertragen."
+"Die Email Addresse wird auf Servern Fachbereichs und/oder "
+"der Fachgruppe Informatik verarbeitet und gespeichert. Außerdem wird eine E-Mail an die angegebene Addresse geschickt. "
+"Die Email Addresse wird nicht an Microsoft übertragen."
 
 #: ms365_accountcreator/templates/index.html:60
 #: ms365_accountcreator/templates/index.html:75
@@ -140,7 +140,7 @@ msgstr ""
 "einen Account für Microsoft Teams zu erstellen und dazu an Microsoft "
 "übertragen wird um dort verarbeitet und gespeichert zu werden. Mir ist "
 "bewusst, dass ich diese Zustimmung widerrufen und die Löschung der Daten "
-"veranlassen kann. "
+"veranlassen kann (über die oben genannte Support Email Addresse)."
 
 #: ms365_accountcreator/templates/index.html:73
 msgid "Detailed legal text teams"

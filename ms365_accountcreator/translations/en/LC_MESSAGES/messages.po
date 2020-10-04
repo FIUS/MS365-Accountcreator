@@ -108,14 +108,14 @@ msgstr ""
 "I consent, that my entered st****** E-Mail Adresse is proccessed and "
 "saved to send me the generated password and to make sure no more than one"
 " account is created for each student I know, that I can revoke this "
-"consent and initiate the deletion of the data."
+"consent and initiate the deletion of the data (via the above mentioned support email address)."
 
 #: ms365_accountcreator/templates/index.html:58
 msgid "Detailed legal text email"
 msgstr ""
-"The email address is exclusively processed or saved on servers of the "
-"computer science departement or the Fachgruppe Informatik. The email "
-"address is not transferred to Microsoft."
+"The email address is processed or saved on servers of the "
+"computer science departement or the Fachgruppe Informatik and used to send an email to it. "
+"The email address is not transferred to Microsoft."
 
 #: ms365_accountcreator/templates/index.html:60
 #: ms365_accountcreator/templates/index.html:75
@@ -132,7 +132,7 @@ msgstr ""
 "I consent that my entered full name is used to create an account for "
 "Microsoft Teams and is therefore transferred to Microsoft and will be "
 "processed and saved there. I know, that I can revoke this consent and "
-"initiate the deletion of the data."
+"initiate the deletion of the data (via the above mentioned support email address)."
 
 #: ms365_accountcreator/templates/index.html:73
 msgid "Detailed legal text teams"
@@ -198,4 +198,3 @@ msgstr ""
 
 #~ msgid "Consent to both parts needed"
 #~ msgstr "You must consent to both before continuing"
-
