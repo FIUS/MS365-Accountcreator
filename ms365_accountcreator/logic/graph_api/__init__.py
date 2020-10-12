@@ -6,6 +6,7 @@ from typing import Dict, Union, Tuple
 import json
 import logging
 import requests
+import unicodedata
 
 from .authentication import Authenticator
 
@@ -58,6 +59,7 @@ class ApiAdapter:
         https://docs.microsoft.com/en-us/graph/api/user-post-users?view=graph-rest-1.0&tabs=http#request-body
         If the config var DEBUG_DONT_CONNECT_TO_API is set to true, this method just logs that it was called and returns
         Returns the userPrincipalName on success
+        Raises a NameFormatError if the name is illegal
         Raises a GraphApiError if the api returns a bad status code
         """
         if self.config['DEBUG_DONT_CONNECT_TO_API']:
@@ -92,6 +94,24 @@ class ApiAdapter:
                 raise GraphApiError("Failed to add user to group.", response.status_code, response.text)
         return user_attrs[4]
 
+    def internal_normalize(self, token: str):
+        '''Normalize the given Token.'''
+        # strip all ' characters that don't occur inside the word
+        # leaves I'M intact but not house'
+        token = token.strip("'''")
+        # lowercase everything
+        token = token.lower()
+        # replace umlauts
+        token = token.replace('ä', 'ae').replace('ü', 'ue').replace('ö', 'oe').replace('ß', 'ss')
+        # split diacritics like axons from letters (one char with axon becomes
+        # two chars: axon+basechar)
+        token = unicodedata.normalize('NFKD', token)
+        # remove all diacritics
+        token = ''.join(c for c in token if unicodedata.combining(c) == 0)
+        # remove any remaining non ascii characters
+        token = token.encode('ascii', 'ignore').decode('ascii')
+        return token
+
     def internal_get_user_attrs(self, first_name: str, last_name: str, user_deduplicate_number: int, password: str) -> Tuple[str]:
         """
         Get a tuple of the relevant attributes for a user
@@ -105,8 +125,13 @@ class ApiAdapter:
         For more info about the parameters see:
         https://docs.microsoft.com/en-us/graph/api/user-post-users?view=graph-rest-1.0&tabs=http#request-body
         Returns a tuple of firstName, lastName, mailNickname, displayName, userPrincipalName and password
+        Raises NameFormatError when the name is not legal
         """
-        mail_nickname = first_name.lower() + "." + last_name.lower()
+        first_name = first_name.strip()
+        last_name = last_name.strip()
+        mail_nickname = self.internal_normalize(first_name) + "." + self.internal_normalize(last_name)
+        if len(mail_nickname) < 3:
+            raise NameFormatError("Name invalid")
         if user_deduplicate_number > 1:
             mail_nickname = mail_nickname + "." + str(user_deduplicate_number)
         display_name = first_name + " " + last_name
@@ -215,3 +240,12 @@ class GraphApiError(Exception):
             cause = "{} StatusCode: {}, ServerRespone: {}".format(message, status, response)
 
         super().__init__(cause)
+
+class NameFormatError(Exception):
+    """
+    Error raised when invlaid name is given
+    """
+    message: str
+    def __init__(self, message: str,):
+        self.message = message
+        super().__init__(message)

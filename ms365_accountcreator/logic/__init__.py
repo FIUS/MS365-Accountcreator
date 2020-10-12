@@ -37,6 +37,7 @@ class Logic:
         Raises EmailIllegalError if the email is not legal
         Raises EmailAlreadyUsedError if the email has been used to create an account before
         Raises GraphApiError if the api returns an unexpected error
+        Raises NameFormatError when the name is not legal
         """
         if not self.verify_mail_is_legal(email):
             raise EmailIllegalError("Email is not valid")
