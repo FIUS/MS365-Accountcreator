@@ -99,7 +99,7 @@ class ApiAdapter:
         # strip all ' characters that don't occur inside the word
         # leaves I'M intact but not house'
         token = token.strip("'''")
-        # uppercase everything
+        # lowercase everything
         token = token.lower()
         # replace umlauts
         token = token.replace('ä', 'ae').replace('ü', 'ue').replace('ö', 'oe').replace('ß', 'ss')
