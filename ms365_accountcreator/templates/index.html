@@ -204,7 +204,7 @@
                     } else {
                         response.json().then(
                             responseData => {
-                                if (! "message" in response_data) {
+                                if (! "message" in responseData) {
                                     throw "Data format invalid"
                                 }
                                 resultSpinner.hidden = true;

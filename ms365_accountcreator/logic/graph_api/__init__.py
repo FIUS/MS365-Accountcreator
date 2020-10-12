@@ -59,6 +59,7 @@ class ApiAdapter:
         https://docs.microsoft.com/en-us/graph/api/user-post-users?view=graph-rest-1.0&tabs=http#request-body
         If the config var DEBUG_DONT_CONNECT_TO_API is set to true, this method just logs that it was called and returns
         Returns the userPrincipalName on success
+        Raises a NameFormatError if the name is illegal
         Raises a GraphApiError if the api returns a bad status code
         """
         if self.config['DEBUG_DONT_CONNECT_TO_API']:
@@ -124,8 +125,13 @@ class ApiAdapter:
         For more info about the parameters see:
         https://docs.microsoft.com/en-us/graph/api/user-post-users?view=graph-rest-1.0&tabs=http#request-body
         Returns a tuple of firstName, lastName, mailNickname, displayName, userPrincipalName and password
+        Raises NameFormatError when the name is not legal
         """
+        first_name = first_name.strip()
+        last_name = last_name.strip()
         mail_nickname = self.internal_normalize(first_name) + "." + self.internal_normalize(last_name)
+        if len(mail_nickname) < 3:
+            raise NameFormatError("Name invalid")
         if user_deduplicate_number > 1:
             mail_nickname = mail_nickname + "." + str(user_deduplicate_number)
         display_name = first_name + " " + last_name
@@ -234,3 +240,12 @@ class GraphApiError(Exception):
             cause = "{} StatusCode: {}, ServerRespone: {}".format(message, status, response)
 
         super().__init__(cause)
+
+class NameFormatError(Exception):
+    """
+    Error raised when invlaid name is given
+    """
+    message: str
+    def __init__(self, message: str,):
+        self.message = message
+        super().__init__(message)

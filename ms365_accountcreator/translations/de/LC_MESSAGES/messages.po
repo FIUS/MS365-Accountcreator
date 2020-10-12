@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MS365-Accountcreator 1\n"
 "Report-Msgid-Bugs-To: issue tracker\n"
-"POT-Creation-Date: 2020-10-04 16:48+0200\n"
+"POT-Creation-Date: 2020-10-12 13:56+0200\n"
 "PO-Revision-Date: 2020-10-02 12:44+0200\n"
 "Last-Translator: Fabian Bühler <@buehlefs>\n"
 "Language: de\n"
@@ -19,17 +19,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: ms365_accountcreator/api/account_creation.py:41
+#: ms365_accountcreator/api/account_creation.py:42
 #: ms365_accountcreator/api/email_verification.py:36
 msgid "Email illegal"
 msgstr "Diese Email Addresse folgt nicht dem notwendigen Format"
 
-#: ms365_accountcreator/api/account_creation.py:43
+#: ms365_accountcreator/api/account_creation.py:44
 #: ms365_accountcreator/api/email_verification.py:38
 msgid "Email already used"
 msgstr "Diese Email Addresse wurde bereits benutzt um einen Account zu erstellen"
 
-#: ms365_accountcreator/api/account_creation.py:45
+#: ms365_accountcreator/api/account_creation.py:46
+msgid "Name format not supported"
+msgstr "Dieser Name wird aus technischen Gründen nicht unterstützt. Bitte Namen mit zumindest einigen englischen Zeichen eingeben."
+
+#: ms365_accountcreator/api/account_creation.py:48
 msgid "Upstream API error"
 msgstr "Fehler einer weiter hinten liegenden API"
 
@@ -45,8 +49,7 @@ msgstr ""
 "\n"
 "deine Registration war erfolgreich.\n"
 "Du kannst dich jetzt mit deinem Nutzer %(username)s und deinem Passwort "
-"%(password)s unter "
-"teams.microsoft.com einloggen. \n"
+"%(password)s unter teams.microsoft.com einloggen. \n"
 "\n"
 "Grüße \n"
 "Die Admins"
@@ -113,16 +116,18 @@ msgid ""
 msgstr ""
 "Ich stimme zu, dass meine eingegebene st****** E-Mail Adresse verarbeitet"
 " und gespeichert wird um das generierte Passwort zu verschicken und um "
-"sicherzustellen, dass maximal ein Account pro Student*in angelegt wird. Mir "
-"ist bewusst, dass ich diese Zustimmung widerrufen und die Löschung der "
-"Daten veranlassen kann (über die oben genannte Support Email Addresse)."
+"sicherzustellen, dass maximal ein Account pro Student*in angelegt wird. "
+"Mir ist bewusst, dass ich diese Zustimmung widerrufen und die Löschung "
+"der Daten veranlassen kann (über die oben genannte Support Email "
+"Addresse)."
 
 #: ms365_accountcreator/templates/index.html:58
 msgid "Detailed legal text email"
 msgstr ""
-"Die Email Addresse wird auf Servern Fachbereichs und/oder "
-"der Fachgruppe Informatik verarbeitet und gespeichert. Außerdem wird eine E-Mail an die angegebene Addresse geschickt. "
-"Die Email Addresse wird nicht an Microsoft übertragen."
+"Die Email Addresse wird auf Servern Fachbereichs und/oder der Fachgruppe "
+"Informatik verarbeitet und gespeichert. Außerdem wird eine E-Mail an die "
+"angegebene Addresse geschickt. Die Email Addresse wird nicht an Microsoft"
+" übertragen."
 
 #: ms365_accountcreator/templates/index.html:60
 #: ms365_accountcreator/templates/index.html:75
@@ -147,10 +152,10 @@ msgid "Detailed legal text teams"
 msgstr ""
 "Der Name wird einmalig auf Servern Fachbereichs und/oder der Fachgruppe "
 "Informatik verarbeitet und dann direkt an die Server von Microsoft "
-"gesendet. Microsoft speichert und verarbeitet diese Daten und alle Daten die "
-"im Zusammenhang mit dem Account anfallen mindestens bis zur Löschung des "
-"Accounts. Weitere Informationen können https://privacy.microsoft.com/de-"
-"de/privacystatement entnommen werden."
+"gesendet. Microsoft speichert und verarbeitet diese Daten und alle Daten "
+"die im Zusammenhang mit dem Account anfallen mindestens bis zur Löschung "
+"des Accounts. Weitere Informationen können https://privacy.microsoft.com"
+"/de-de/privacystatement entnommen werden."
 
 #: ms365_accountcreator/templates/index.html:80
 msgid "Step 3"
@@ -206,3 +211,4 @@ msgstr ""
 
 #~ msgid "Consent needed"
 #~ msgstr "Es muss zugestimmt werden um fortfahren zu können"
+
