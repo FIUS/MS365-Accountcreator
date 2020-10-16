@@ -110,6 +110,7 @@ class ApiAdapter:
         token = ''.join(c for c in token if unicodedata.combining(c) == 0)
         # remove any remaining non ascii characters
         token = token.encode('ascii', 'ignore').decode('ascii')
+        token = token.replace(' ', '')
         return token
 
     def internal_get_user_attrs(self, first_name: str, last_name: str, user_deduplicate_number: int, password: str) -> Tuple[str]:
