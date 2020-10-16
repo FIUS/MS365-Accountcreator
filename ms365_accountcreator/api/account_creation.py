@@ -45,5 +45,6 @@ class AccountCreation(Resource):
         except NameFormatError:
             abort(400, gettext("Name format not supported"))
         except GraphApiError as err:
+            APP_LOGGER.error("GraphAPI error", err, request.get_json())
             abort(500, gettext("Upstream API error"))
             APP_LOGGER.error(err)
