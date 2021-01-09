@@ -10,8 +10,8 @@ This project is a flask app, which should be deployed using a wsgi server.
 
 ### Manual
 See the flask wsgi documentation for instrcutions. \
-The requirements from the Pipfile need to be installed: \
-`pipenv install` \
+The required packages need to be installed: \
+`poetry install` \
 The name of the module is `ms365_accountcreator`.
 The name of the callable is `APP`. \
 Please make sure the environment variable `JWT_SECRET_KEY` is set to something sensible or the `JWT_SECRET_KEY` is configured in the config.
@@ -182,12 +182,12 @@ Download or clone the sources from github.com/FIUS/MS365-Accountcreator
 
 ### Prerequesits
 - python >= 3.7
-- pipenv [for that python version]
+- poetry [for that python version]
 
 ### Preparations:
 ```shell
 # Setup pipenv and install dependencies
-pipenv install --dev
+poetry install
 #pipenv install #when not wanting dev depedencies.
 ```
 
@@ -195,24 +195,23 @@ pipenv install --dev
 
 First start:
 ```shell
-source "$(pipenv --venv)/bin/activate"
 export FLASK_APP=ms365_accountcreator
 export FLASK_DEBUG=1  # to enable autoreload
 export MODE=debug
 # export MODE=production
 # export MODE=test
 
-pipenv run babel-compile
+poetry run babel-compile
 
-flask create_db
+poetry run flask create_db
 
 # start server
-flask run
+poetry run flask run
 ```
 
 Subsequent starts:
 ```shell
-flask run
+poetry run flask run
 ```
 
 ### Shell.nix
@@ -231,7 +230,7 @@ The translations are used by [flask-babel](https://flask-babel.tkte.ch/) to be a
 
 #### Changing translations
 To change a translation go to [translations](ms365_accountcreator/translations/), find the langauge to change, go to `LC_MESSAGES` and edit `messages.po`.
-After editing `messages.po` run the command `pipenv run babel-compile` to recompile the translations, so the updated version can be used. 
+After editing `messages.po` run the command `poetry run pybabel compile -d ms365_accountcreator/translations` to recompile the translations, so the updated version can be used.
 
 #### Adding translations
-When you want to add new texts to be translated, just use the `gettext()` method with an appropriate argument and run `pipenv run babel-extract` and `pipenv run babel-update`. This will update the `messages.po` files for all langauges. Then follow the steps in [Changing translations](#changing-translations) to add a translation for the new text to each language.
+When you want to add new texts to be translated, just use the `gettext()` method with an appropriate argument and run `poetry run pybabel extract -F babel.cfg -o messages.pot .` and `poetry run pybabel update -i messages.pot -d ms365_accountcreator/translations`. This will update the `messages.po` files for all langauges. Then follow the steps in [Changing translations](#changing-translations) to add a translation for the new text to each language.
