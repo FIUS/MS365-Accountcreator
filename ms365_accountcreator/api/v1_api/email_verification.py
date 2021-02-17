@@ -29,6 +29,6 @@ class EmailVerification(MethodView):
         result: Dict = {'valid': True}
         if not LOGIC.verify_mail_is_legal(email):
             result = {'valid': False, 'reason': gettext("Email illegal")}
-        elif not LOGIC.verify_mail_has_not_been_used(email):
+        elif LOGIC.is_email_only_allowed_once() and not LOGIC.verify_mail_has_not_been_used(email):
             result = {'valid': False, 'reason': gettext("Email already used")}
         return result

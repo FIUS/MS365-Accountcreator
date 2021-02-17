@@ -11,7 +11,7 @@ from .models import AccountCreation, LangSchema
 
 from ... import APP_LOGGER, LOGIC
 
-from ...logic import EmailAlreadyUsedError, EmailIllegalError
+from ...logic import EmailAlreadyUsedError, EmailIllegalError, VouchersNotEnabledException, NoVoucherGivenException, InvalidVoucherException, VoucherUsedUpException
 from ...logic.graph_api import GraphApiError, NameFormatError
 
 @API_V1.route('/account_creation')
@@ -39,6 +39,14 @@ class AccountCreation(MethodView):
             abort(400, message=gettext("Email already used"))
         except NameFormatError:
             abort(400, message=gettext("Name format not supported"))
+        except VouchersNotEnabledException:
+            abort(400, message=gettext("Vouchers are not enabled"))
+        except NoVoucherGivenException:
+            abort(400, message=gettext("Require a voucher"))
+        except InvalidVoucherException:
+            abort(400, message=gettext("Voucher invalid"))
+        except VoucherUsedUpException:
+            abort(400, message=gettext("Voucher used up"))
         except GraphApiError as err:
             APP_LOGGER.error("GraphAPI error", err, new_data)
             abort(500, message=gettext("Upstream API error"))

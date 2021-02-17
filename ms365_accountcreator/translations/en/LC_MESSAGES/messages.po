@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MS365-Accountcreator 1\n"
 "Report-Msgid-Bugs-To: issue tracker\n"
-"POT-Creation-Date: 2020-10-12 13:56+0200\n"
+"POT-Creation-Date: 2021-02-17 15:37+0100\n"
 "PO-Revision-Date: 2020-10-02 15:04+0200\n"
 "Last-Translator: Fabian Bühler <@buehlefs>\n"
 "Language: en\n"
@@ -17,25 +17,49 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.8.0\n"
+"Generated-By: Babel 2.9.0\n"
 
-#: ms365_accountcreator/api/account_creation.py:42
+#: ms365_accountcreator/api/account_creation.py:46
 #: ms365_accountcreator/api/email_verification.py:36
 msgid "Email illegal"
 msgstr "The email address does not conform to the required format"
 
-#: ms365_accountcreator/api/account_creation.py:44
+#: ms365_accountcreator/api/account_creation.py:48
 #: ms365_accountcreator/api/email_verification.py:38
 msgid "Email already used"
 msgstr "The email address was already used to create an account"
 
-#: ms365_accountcreator/api/account_creation.py:46
+#: ms365_accountcreator/api/account_creation.py:50
 msgid "Name format not supported"
-msgstr "This name is not supported due to technical reasons. Please enter at least some english characters"
+msgstr ""
+"This name is not supported due to technical reasons. Please enter at "
+"least some english characters"
 
-#: ms365_accountcreator/api/account_creation.py:48
+#: ms365_accountcreator/api/account_creation.py:52
+msgid "Vouchers are not enabled"
+msgstr ""
+
+#: ms365_accountcreator/api/account_creation.py:54
+msgid "Require a voucher"
+msgstr ""
+
+#: ms365_accountcreator/api/account_creation.py:56
+#: ms365_accountcreator/api/voucher_verification.py:37
+msgid "Voucher invalid"
+msgstr ""
+
+#: ms365_accountcreator/api/account_creation.py:58
+#: ms365_accountcreator/api/voucher_verification.py:41
+msgid "Voucher used up"
+msgstr ""
+
+#: ms365_accountcreator/api/account_creation.py:61
 msgid "Upstream API error"
 msgstr "Error of an upstream API"
+
+#: ms365_accountcreator/api/voucher.py:67
+msgid "Voucher not found."
+msgstr "No voucher with this ID was found."
 
 #: ms365_accountcreator/logic/email.py:65
 msgid "registration mail subject"
@@ -203,4 +227,3 @@ msgstr ""
 
 #~ msgid "Consent to both parts needed"
 #~ msgstr "You must consent to both before continuing"
-

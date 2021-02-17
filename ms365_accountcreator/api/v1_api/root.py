@@ -13,6 +13,8 @@ API_V1 = Blueprint("api-v1", __name__, url_prefix="/api/v1", description="The ro
 class RootData:
     account_creation: str
     email_verification: str
+    voucher_verification: str
+    voucher: str
 
 @API_V1.route('/')
 class RootView(MethodView):
@@ -27,4 +29,6 @@ class RootView(MethodView):
         Get the urls of the next endpoints
         """
         return RootData(account_creation=url_for("api-v1.AccountCreation", _external=True),
-                        email_verification=url_for("api-v1.EmailVerification", _external=True))
+                        email_verification=url_for("api-v1.EmailVerification", _external=True),
+                        voucher_verification=url_for("api-v1.VoucherVerification", _external=True),
+                        voucher=url_for("api-v1.VoucherList", _external=True))
