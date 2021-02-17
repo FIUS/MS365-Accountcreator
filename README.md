@@ -174,6 +174,30 @@ Not used if `MAIL_SERVER_LOGIN` is `False`
 The address to set as sending address. \
 Make sure the user you logged in with is allowed to use this address.
 
+## Security considerations
+The following security related points should be considered:
+
+### Using Voucher without counting
+In some scenarios it might be possible for an attacker to create a race condition in the voucher counting logic.
+This may allow the attacker to use a voucher without the voucher usage count increasing.
+To avoid that we need to set the correct [isolation level](https://docs.sqlalchemy.org/en/13/glossary.html#term-isolation) for the database connections.
+
+The following four isolation levels are listed in increasing isolation:
+  * [`READ UNCOMMITTED`](https://docs.sqlalchemy.org/en/13/glossary.html#term-read-uncommitted)
+  * [`READ COMMITTED`](https://docs.sqlalchemy.org/en/13/glossary.html#term-read-committed)
+  * [`REPEATABLE READ`](https://docs.sqlalchemy.org/en/13/glossary.html#term-repeatable-read)
+  * [`SERIALIZABLE`](https://docs.sqlalchemy.org/en/13/glossary.html#term-serializable)
+
+To avoid the race condition we need at least `REPEATABLE READ`.
+Stronger isolation levels have the disadvantage of slowing down the application if multiple users use it concurrently.
+However, not all isolation levels are available with every database engine.
+Therfore the correct level cannot be set automatically.
+The administrator is responsible for setting an appropriate isolation level in the config through the use of [`SQLALCHEMY_ENGINE_OPTIONS`](https://flask-sqlalchemy.palletsprojects.com/en/2.x/config/#configuration-keys).
+For example when using postgresql a good configuration is:
+```
+SQLALCHEMY_ENGINE_OPTIONS = {'isolation_level': 'REPEATABLE READ'}
+```
+
 ## Development
 Here are some steps on how to setup the development environment for this project.
 

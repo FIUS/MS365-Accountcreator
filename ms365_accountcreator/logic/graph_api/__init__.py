@@ -1,7 +1,9 @@
 """
 The init file of the graph_api module
 """
-from typing import Dict, Union, Tuple
+from typing import Dict, Union, Tuple, List
+
+from uuid import UUID
 
 import json
 import logging
@@ -18,10 +20,6 @@ GRAPH_API_URL_ASSIGN_LICENSE = "https://graph.microsoft.com/v1.0/users/{}/assign
 GRAPH_API_URL_GROUP_ADD_MEMBER = "https://graph.microsoft.com/v1.0/groups/{}/members/$ref"
 #See https://docs.microsoft.com/en-us/graph/api/user-get?view=graph-rest-1.0&tabs=http
 GRAPH_API_URL_GET_USER = "https://graph.microsoft.com/v1.0/users/{}"
-#Found by getting the license on a manually created user
-#See https://docs.microsoft.com/en-us/graph/api/user-list-licensedetails?view=graph-rest-1.0&tabs=http
-GRAPH_API_UID_STUDENT_LICENSE = "314c4481-f395-4525-be8b-2ec4bb1e9d91"
-
 
 class ApiAdapter:
     """
@@ -45,7 +43,7 @@ class ApiAdapter:
             self.auth = Authenticator(self.config)
         return self.auth
 
-    def create_user(self, first_name: str, last_name: str, password: str):
+    def create_user(self, first_name: str, last_name: str, password: str, licenses: List[UUID], groups: List[UUID]):
         """
         Create a user on the MS365 Tenant using the api.
         Also adds the student license to the user and the user to the configured groups
@@ -64,7 +62,7 @@ class ApiAdapter:
         """
         if self.config['DEBUG_DONT_CONNECT_TO_API']:
             logging.getLogger(__name__).info(
-                "Would create user now but api connection is disabled. FirstName: %s, LastName: %s, Password: %s", 
+                "Would create user now but api connection is disabled. FirstName: %s, LastName: %s, Password: %s",
                 first_name, last_name, password)
             return "username"
 
@@ -85,13 +83,17 @@ class ApiAdapter:
         response: requests.Response = self.internal_create_user(user_attrs)
 
         response_object = json.loads(response.text)
-        response = self.internal_assign_user_license(response_object['id'], GRAPH_API_UID_STUDENT_LICENSE)
-        if response.status_code > 299:
-            raise GraphApiError("Failed to assign license to user.", response.status_code, response.text)
-        for group_id in self.config['GRAPH_API_GROUPS_FOR_NEW_USERS']:
+
+        for license_id in licenses:
+            response = self.internal_assign_user_license(response_object['id'], license_id)
+            if response.status_code > 299:
+                raise GraphApiError("Failed to assign license to user.", response.status_code, response.text)
+
+        for group_id in groups:
             response = self.internal_add_user_to_group(response_object['id'], group_id)
             if response.status_code > 299:
                 raise GraphApiError("Failed to add user to group.", response.status_code, response.text)
+
         return user_attrs[4]
 
     def internal_normalize(self, token: str):
@@ -177,28 +179,28 @@ class ApiAdapter:
         """
         return requests.post(GRAPH_API_URL_CREATE_USER, headers=self.internal_get_headers(), json=payload)
 
-    def internal_assign_user_license(self, user_id, license_uid):
+    def internal_assign_user_license(self, user_id: str, license_uid: UUID):
         """
         Assign the given license to the given user with all plans of the license enabled
         """
         payload = {
             'addLicenses': [{
                 'disabledPlans': [],
-                'skuId': license_uid
+                'skuId': str(license_uid)
             }],
             'removeLicenses': []
         }
         url = GRAPH_API_URL_ASSIGN_LICENSE.format(user_id)
         return requests.post(url, headers=self.internal_get_headers(), json=payload)
 
-    def internal_add_user_to_group(self, user_id, group_id):
+    def internal_add_user_to_group(self, user_id: str, group_id: UUID):
         """
         Add the given user to the given group.
         """
         payload = {
             "@odata.id": "https://graph.microsoft.com/v1.0/directoryObjects/" + user_id
         }
-        url = GRAPH_API_URL_GROUP_ADD_MEMBER.format(group_id)
+        url = GRAPH_API_URL_GROUP_ADD_MEMBER.format(str(group_id))
         return requests.post(url, headers=self.internal_get_headers(), json=payload)
 
     def internal_get_user(self, user_id):

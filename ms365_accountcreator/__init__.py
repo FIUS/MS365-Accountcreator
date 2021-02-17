@@ -42,6 +42,9 @@ for var in SECRETS:
     if var not in APP.config or len(APP.config[var]) == 0:
         raise ValueError("The secret " + var + " is not set!")
 
+if APP.config["REQUIRE_VOUCHERS"] and not APP.config["USE_VOUCHERS"]:
+    raise ValueError("Cannot require vouchers when not using vouchers!")
+
 init_logging(APP)
 
 r_p_count = APP.config['REVERSE_PROXY_COUNT']

@@ -23,6 +23,12 @@ class Config(object):
     DEBUG_DONT_CONNECT_TO_API = False
     DEBUG_DONT_SEND_MAIL = False
 
+    ALLOW_EMAIL_ONLY_ONCE = True
+
+    USE_VOUCHERS = False
+    REQUIRE_VOUCHERS = False
+    VOUCHER_TOKEN_BITS = 128
+
     GENERATED_PASSWORD_BYTES = 8
 
     # Should be regex compatible with https://docs.python.org/3/library/re.html
@@ -36,6 +42,8 @@ class Config(object):
 
     GRAPH_API_USER_MAIL_DOMAIN = "example.onmicrosoft.com"
     GRAPH_API_GROUPS_FOR_NEW_USERS = ["00000000-0000-0000-0000-000000000000"]
+
+    GRAPH_API_LICENSES_FOR_NEW_USERS = ["314c4481-f395-4525-be8b-2ec4bb1e9d91"]
 
     MAIL_SERVER_HOST = ""
     MAIL_SERVER_PORT = 25
