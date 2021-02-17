@@ -9,7 +9,7 @@ from ..logging import APP_LOGGER
 STD_STRING_SIZE = 190  # Max size that allows Indices while using utf8mb4 in MySql DB
 
 
-from . import registered_email_address
+from . import registered_email_address, vouchers
 
 
 if APP.config.get('SQLALCHEMY_DATABASE_URI', '').startswith('sqlite://'):
