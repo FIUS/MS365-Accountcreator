@@ -118,31 +118,74 @@
             });
         }
 
+        function postDataAndProcess(url = '', data = {}, on_success = function(data) {}, on_failure = function(message){}) {
+            let resp = null
+            postData(url, data)
+                .then(response => {
+                    resp = response
+                    return response.json()
+                })
+                .then(data => {
+                    let response = resp
+                    let content = data
+                    if(response.ok) {
+                        on_success(content)
+                    } else {
+                        let status = response.status
+                        let message = ""
+                        if(status == 422) {
+                            if((! "errors" in content) || (! content.errors.constructor == Object)) throw "Data format invalid"
+                            for (let key in content.errors) {
+                                value = content.errors[key]
+                                if(! value.constructor == Object) throw "Data format invalid" //Check for dict/object
+                                for (let innerkey in value) {
+                                    innervalue = value[innerkey]
+                                    if (! Array.isArray(innervalue)) throw "Data format invalid"
+                                    for(let i in innervalue) {
+                                        if(message.length > 0 && message.charAt(message.length -1) != ' ') {
+                                            message += ' '
+                                        }
+                                        message += innervalue[i]
+                                    }
+                                }
+                            }
+                        } else {
+                            if (! "message" in content) {
+                                throw "Data format invalid"
+                            }
+                            message = content.message
+                        }
+                        on_failure(message)
+                    }
+                })
+                .catch(() => {
+                    on_failure("{{ gettext('There was an error while connecting to the server. Please try again later or contact the administrator of this site.') }}")
+                });
+        }
+
         function emailSubmit(event) {
             event.preventDefault();
 
             const email = document.getElementById('input-email').value;
 
-            postData(url_api_endpoint_email_verification, {'email': email})
-                .then(response => {
-                    return response.json()
-                })
-                .then(response_data => {
-                    if ((! "valid" in response_data) || (! "reason" in response_data)) {
+            postDataAndProcess(url_api_endpoint_email_verification, {'email': email},
+                function(data) {
+                    if ((! "valid" in data) || (! "reason" in data)) {
                         throw "Data format invalid"
                     }
-                    if (response_data.valid) {
+                    if (data.valid) {
                         document.getElementById('step-1').classList.add('done');
                         const step2 = document.getElementById('step-2');
                         step2.classList.remove('inactive');
                         step2.setAttribute('open', '');
                     } else {
-                        alert(response_data.reason)
+                        alert(data.reason)
                     }
-                })
-                .catch(() => {
-                    alert("{{ gettext('There was an error while connecting to the server. Please try again later or contact the administrator of this site.') }}")
-            });
+                },
+                function(message) {
+                    alert(message)
+                }
+            )
             return false;
         }
 
@@ -193,38 +236,20 @@
             resultSpinner.hidden = false;
             resultText.hidden = true;
 
-            postData(url_api_endpoint_account_creation, {'first_name': first_name, 'last_name': last_name, 'email': email}).then(
-                response => {
-                    if(response.ok) {
-                        document.getElementById('step-3').classList.add('done');
-
-                        resultSpinner.hidden = true;
-                        resultText.textContent = '{{ gettext("Your account was successfully created and an email with the password will be sent to your specified st****** email.") }}';
-                        resultText.hidden = false;
-                    } else {
-                        response.json().then(
-                            responseData => {
-                                if (! "message" in responseData) {
-                                    throw "Data format invalid"
-                                }
-                                resultSpinner.hidden = true;
-                                resultText.textContent = responseData.message;
-                                resultText.hidden = false;
-                                nameFormSubmit.disabled = false;
-                            }
-                        ).catch(() => {
-                            resultSpinner.hidden = true;
-                            resultText.textContent = '{{ gettext("There was an error creating your account. Please try again later or contact the administrator of this site.") }}';
-                            resultText.hidden = false;
-                            nameFormSubmit.disabled = false
-                        });
-                    }
-                }).catch(() => {
+            postDataAndProcess(url_api_endpoint_account_creation, {'firstName': first_name, 'lastName': last_name, 'email': email},
+                function(data) {
+                    document.getElementById('step-3').classList.add('done');
                     resultSpinner.hidden = true;
-                    resultText.textContent = '{{ gettext("There was an error creating your account. Please try again later or contact the administrator of this site.") }}';
+                    resultText.textContent = '{{ gettext("Your account was successfully created and an email with the password will be sent to your specified st****** email.") }}';
                     resultText.hidden = false;
-                    nameFormSubmit.disabled = false
-                });
+                },
+                function(message) {
+                    resultSpinner.hidden = true;
+                    resultText.textContent = message;
+                    resultText.hidden = false;
+                    nameFormSubmit.disabled = false;
+                }
+            )
 
             return false;
         }

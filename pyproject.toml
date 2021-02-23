@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "MS365-Accountcreator"
-version = "1.0.0"
+version = "1.1.0"
 description = "A small python flask server to allow users to sign up to a Microsoft Azure Tenant using the Microsoft Graph API "
 authors = ["Tim Neumann <neumantm@fius.informatik.uni-stuttgart.de>"]
 license = "Mozilla Public License 2.0"
@@ -9,7 +9,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.7"
 flask = "^1.1"
-flask-restx = "^0.2"
+flask-smorest = "^0.29.0"
 Flask-SQLAlchemy = "^2.3"
 Flask-Migrate = "^2.5"
 Flask-Cors = "^3.0"
