@@ -9,6 +9,7 @@ from . import api
 if APP.config.get('DEBUG', False):
     from . import debug_routes
 
+api.register_root_api(APP)
 
 @APP.route('/', defaults={'lang': ''})
 @APP.route('/<string:lang>')
@@ -20,8 +21,8 @@ def default_route(lang):
         flask_babel_refresh()
     email_regex = APP.config.get('EMAIL_ADDRESS_FILTER', '.*')
     support_email = APP.config.get('SUPPORT_EMAIL', "")
-    url_email_verification = url_for("api.email_verification_email_verification")
-    url_account_creation = url_for("api.account_creation_account_creation")
+    url_email_verification = url_for("api-v1.EmailVerification")
+    url_account_creation = url_for("api-v1.AccountCreation")
     lang_used = "en"
     locale = get_locale()
     if locale is not None:

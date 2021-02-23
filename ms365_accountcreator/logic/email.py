@@ -28,7 +28,13 @@ class Email:
         """
         Sends a email with the given body and subject the the given address.
         """
-        self.logger.debug("Sending mail to " + recipient_address + " with subject " + subject + " and body " + body)
+        log_msg = "mail to " + recipient_address + " with subject " + subject + " and body " + body
+        if self.config['DEBUG_DONT_SEND_MAIL']:
+            self.logger.info("Not sending mail, becaue we are debugging. Would send " + log_msg)
+            return
+        else:
+            self.logger.debug("Sending " + log_msg)
+
 
         host = self.config["MAIL_SERVER_HOST"]
         port = self.config["MAIL_SERVER_PORT"]

@@ -15,6 +15,7 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 
 from .config import coerce_value_to
 from .logging import init_logging, get_logging
+from .babel import register_babel
 
 APP = Flask(__name__, instance_relative_config=True)  # type: Flask
 APP.config['MODE'] = environ.get('MODE', 'PRODUCTION').upper()
@@ -69,14 +70,7 @@ JWT: JWTManager = JWTManager(APP)
 CORS(APP)
 
 # Setup Babel translations
-BABEL = Babel(APP)
-
-
-@BABEL.localeselector
-def get_locale():
-    # try to guess the language from the user accept
-    # header the browser transmits. We support de/en. The best match wins.
-    return request.accept_languages.best_match(['de', 'en'])
+register_babel(APP)
 
 
 # pylint: disable=C0413

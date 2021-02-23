@@ -7,7 +7,6 @@ from numbers import Number
 class Config(object):
     DEBUG = False
     TESTING = False
-    RESTPLUS_VALIDATE = True
     JWT_CLAIMS_IN_REFRESH_TOKEN = True
     JWT_SECRET_KEY = ''
     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
@@ -20,9 +19,9 @@ class Config(object):
 
     JSON_SORT_KEYS = False
     JSONIFY_PRETTYPRINT_REGULAR = False
-    RESTPLUS_JSON = {'indent': None}
 
     DEBUG_DONT_CONNECT_TO_API = False
+    DEBUG_DONT_SEND_MAIL = False
 
     GENERATED_PASSWORD_BYTES = 8
 
@@ -49,6 +48,16 @@ class Config(object):
 
     SUPPORT_EMAIL = ""
 
+    OPENAPI_VERSION = "3.0.2"
+    OPENAPI_JSON_PATH = "api-spec.json"
+    OPENAPI_URL_PREFIX = "/api"
+    OPENAPI_REDOC_PATH = "/redoc"
+    OPENAPI_REDOC_URL = (
+        "https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js"
+    )
+    OPENAPI_SWAGGER_UI_PATH = "/swagger-ui"
+    OPENAPI_SWAGGER_UI_URL = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
+
 class ProductionConfig(Config):
     pass
 
@@ -61,6 +70,11 @@ class DebugConfig(Config):
     DEBUG_DONT_CONNECT_TO_API = True
 
     LOGGING_CONFIGS = ['logging_config.json', 'logging_config_debug.json']
+
+    # do not propagate exceptions in debug mode
+    # this makes it hard to test the api and an api client at the same time
+    PROPAGATE_EXCEPTIONS = False
+
 
 
 class TestingConfig(Config):
