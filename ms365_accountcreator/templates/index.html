@@ -34,15 +34,29 @@
     <![if !IE]>
     <div class="form-container">
         <!-- Explanation -->
-        <details id="step-0" open>
-            <summary>{{ gettext('Step 0') }}</summary>
+        <details id="explanation" open>
+            <summary>{{ gettext('Explanation') }}</summary>
             <div class="details-content">
                 {{ gettext('Explanation and statement containing %(support)s', support=support_email)}}
             </div>
         </details>
+        {% if voucher_enabled -%}
+        <!-- Voucher Form-->
+        <details id="step-voucher" class="inactive">
+        <summary>{{ gettext('Step Voucher') }}</summary>
+            <form id="voucher-form" class="details-content" onsubmit="return voucherSubmit(event);">
+                <div class="form-field">
+                    <label for="input-voucher">{{ gettext('Voucher') }}</label>
+                    <input id="input-voucher" name="voucher" aria-describedby="input-voucher-note" type="string" {% if voucher_required %}required{% endif %} {% if voucher_token is not none %}value="{{ voucher_token }}"{% endif %}>
+                    <span id="input-voucher-note" class="form-field-description">{{ gettext('Voucher required') if voucher_required else gettext('You may enter a Voucher.') }}</span>
+                </div>
+                <input type="submit" name="submit" value="{{ gettext('Next') }}">
+            </form>
+        </details>
+        {%- endif %}
         <!-- Email Form -->
-        <details id="step-1" open>
-            <summary>{{ gettext('Step 1') }}</summary>
+        <details id="step-email" class="inactive">
+            <summary>{{ gettext('Step Email') }}</summary>
             <form id="email-form" class="details-content" onsubmit="return emailSubmit(event);">
                 <div class="form-field">
                     <label for="input-email">{{ gettext('Your st****** email address') }}</label>
@@ -61,8 +75,8 @@
             </form>
         </details>
         <!-- Consent Form -->
-        <details id="step-2" class="inactive">
-            <summary>{{ gettext('Step 2') }}</summary>
+        <details id="step-consent" class="inactive">
+            <summary>{{ gettext('Step Consent') }}</summary>
             <form id="consent-form" class="details-content" onsubmit="return consentSubmit(event);">
                 <div class="form-field">
                     <label for="input-consent-teams">
@@ -76,8 +90,8 @@
             </form>
         </details>
         <!-- Name Form -->
-        <details id="step-3" class="inactive">
-            <summary>{{ gettext('Step 3') }}</summary>
+        <details id="step-name" class="inactive">
+            <summary>{{ gettext('Step Name') }}</summary>
             <form id="name-form" class="details-content" onsubmit="return nameSubmit(event);">
                 <div class="form-field">
                     <label for="input-first-name">{{ gettext('Name') }}</label>
@@ -91,7 +105,7 @@
             </form>
         </details>
         <details id="step-result" class="inactive">
-            <summary>{{ gettext('Result') }}</summary>
+            <summary>{{ gettext('Step Result') }}</summary>
             <div class="details-content">
                 <p id="result-spinner" class="spinner">{{ gettext('Awaiting API response:')}}</p>
                 <p id="result-text" hidden></p>
@@ -101,9 +115,74 @@
     <![endif]>
 
     <script>
+        const url_api_endpoint_voucher_verification = "{{url_api_endpoint_voucher_verification}}"
         const url_api_endpoint_email_verification = "{{url_api_endpoint_email_verification}}"
         const url_api_endpoint_account_creation = "{{url_api_endpoint_account_creation}}"
         const lang = "{{lang}}"
+
+        const steps = [
+            {% if voucher_enabled %}"voucher",{% endif %}
+            "email",
+            "consent",
+            "name",
+            "result",
+        ]
+
+        window.currentStep = 0
+
+        function setUiStepState(step, state) {
+            element = document.getElementById('step-' + step)
+            switch(state) {
+                case "closed":
+                    element.classList.remove('done');
+                    element.classList.add('inactive');
+                    element.removeAttribute('open');
+                    break;
+                case "active":
+                    element.classList.remove('done');
+                    element.classList.remove('inactive');
+                    element.setAttribute('open', '');
+                    break;
+                case "done":
+                    element.classList.add('done');
+                    element.classList.remove('inactive');
+                    element.setAttribute('open', '');
+                    break;
+                default:
+                    throw "Unknown state"
+            }
+        }
+
+        function updateUiToCurrentStep() {
+            let curr_step = window.currentStep
+            for(let i = 0; i < steps.length; i++) {
+                step = steps[i]
+                if(i < curr_step) {
+                    setUiStepState(step, "done")
+                }
+                if (i == curr_step) {
+                    setUiStepState(step, "active")
+                }
+                if (i > curr_step) {
+                    setUiStepState(step, "closed")
+                }
+            }
+        }
+
+        window.onload = updateUiToCurrentStep
+
+        function stepFinished(step_name) {
+            let step = steps.indexOf(step_name)
+            if(step < 0) {
+                throw "Unknown step"
+            }
+            let next_step = step + 1
+            if(next_step >= steps.length) {
+                throw "Next step does not exist"
+            }
+            window.currentStep = next_step
+            updateUiToCurrentStep()
+        }
 
         function postData(url = '', data = {}) {
             return fetch(url, {
@@ -169,6 +248,34 @@
                 });
         }
 
+        function voucherSubmit(event) {
+            event.preventDefault();
+
+            const voucher = document.getElementById('input-voucher').value;
+
+            if(voucher.length == 0) {
+                stepFinished("voucher")
+                return false;
+            }
+
+            postDataAndProcess(url_api_endpoint_voucher_verification, {'voucherToken': voucher},
+                function(data) {
+                    if ((! "valid" in data) || (! "reason" in data)) {
+                        throw "Data format invalid"
+                    }
+                    if (data.valid) {
+                        stepFinished("voucher")
+                    } else {
+                        alert(data.reason)
+                    }
+                },
+                function(message) {
+                    alert(message)
+                }
+            )
+            return false;
+        }
+
         function emailSubmit(event) {
             event.preventDefault();
 
@@ -180,10 +287,7 @@
                         throw "Data format invalid"
                     }
                     if (data.valid) {
-                        document.getElementById('step-1').classList.add('done');
-                        const step2 = document.getElementById('step-2');
-                        step2.classList.remove('inactive');
-                        step2.setAttribute('open', '');
+                        stepFinished("email")
                     } else {
                         alert(data.reason)
                     }
@@ -203,11 +307,7 @@
                 return;
             }
 
-            document.getElementById('step-2').classList.add('done');
-
-            const step3 = document.getElementById('step-3');
-            step3.classList.remove('inactive');
-            step3.setAttribute('open', '');
+            stepFinished("consent")
 
             return false;
         }
@@ -225,10 +325,9 @@
                 return;
             }
 
-            // open result tab
-            const stepResult = document.getElementById('step-result');
-            stepResult.classList.remove('inactive');
-            stepResult.setAttribute('open', '');
+            stepFinished("name")
+
+            const voucher_el = document.getElementById('input-voucher')
 
             const first_name = document.getElementById('input-first-name').value
             const last_name = document.getElementById('input-family-name').value
@@ -242,9 +341,13 @@
             resultSpinner.hidden = false;
             resultText.hidden = true;
 
-            postDataAndProcess(url_api_endpoint_account_creation, {'firstName': first_name, 'lastName': last_name, 'email': email},
+            let data = {'firstName': first_name, 'lastName': last_name, 'email': email}
+            if (voucher_el != null && voucher_el.value.length > 0) {
+                data["voucherToken"] = voucher_el.value
+            }
+
+            postDataAndProcess(url_api_endpoint_account_creation, data,
                 function(data) {
-                    document.getElementById('step-3').classList.add('done');
                     resultSpinner.hidden = true;
                     resultText.textContent = '{{ gettext("Your account was successfully created and an email with the password will be sent to your specified st****** email.") }}';
                     resultText.hidden = false;

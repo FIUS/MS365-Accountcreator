@@ -94,7 +94,7 @@ msgid ""
 msgstr ""
 
 #: ms365_accountcreator/templates/index.html:38
-msgid "Step 0"
+msgid "Explanation"
 msgstr "Introduction"
 
 #: ms365_accountcreator/templates/index.html:40
@@ -190,7 +190,7 @@ msgid "Create Account"
 msgstr "Create Account"
 
 #: ms365_accountcreator/templates/index.html:94
-msgid "Result"
+msgid "Step Result"
 msgstr "Result"
 
 #: ms365_accountcreator/templates/index.html:96

@@ -19,8 +19,12 @@ def default_route(lang):
         values = (lang, 10), *request.accept_languages
         request.accept_languages = LanguageAccept(values)
         flask_babel_refresh()
+    voucher = request.args.get("voucher", None)
     email_regex = APP.config.get('EMAIL_ADDRESS_FILTER', '.*')
     support_email = APP.config.get('SUPPORT_EMAIL', "")
+    voucher_enabled = APP.config.get('USE_VOUCHERS', False)
+    voucher_required = APP.config.get('REQUIRE_VOUCHERS', False)
+    url_voucher_verification = url_for("api-v1.VoucherVerification")
     url_email_verification = url_for("api-v1.EmailVerification")
     url_account_creation = url_for("api-v1.AccountCreation")
     lang_used = "en"
@@ -28,4 +32,6 @@ def default_route(lang):
     if locale is not None:
         lang_used = locale.language
     return render_template('index.html', email_regex=email_regex, lang = lang_used, support_email=support_email,
-        url_api_endpoint_email_verification=url_email_verification, url_api_endpoint_account_creation=url_account_creation)
+        url_api_endpoint_email_verification=url_email_verification, url_api_endpoint_account_creation=url_account_creation,
+        voucher_enabled=voucher_enabled, voucher_required=voucher_required, url_api_endpoint_voucher_verification=url_voucher_verification,
+        voucher_token=voucher)
