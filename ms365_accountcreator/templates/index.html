@@ -123,12 +123,18 @@
             postData(url, data)
                 .then(response => {
                     resp = response
+                    if(response.status == 204) {
+                        //Empty body
+                        return response.text();
+                    }
                     return response.json()
                 })
                 .then(data => {
                     let response = resp
                     let content = data
-                    if(response.ok) {
+                    if(response.status == 204) {
+                        on_success(null)
+                    }else if(response.ok) {
                         on_success(content)
                     } else {
                         let status = response.status
