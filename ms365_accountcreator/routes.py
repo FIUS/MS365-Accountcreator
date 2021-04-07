@@ -1,3 +1,4 @@
+from os import path
 from flask import render_template, request, url_for
 from werkzeug.datastructures import LanguageAccept
 from flask_babel import refresh as flask_babel_refresh
@@ -5,6 +6,7 @@ from flask_babel import get_locale
 from . import APP
 
 from . import api
+from .db_models.vouchers import Voucher
 
 if APP.config.get('DEBUG', False):
     from . import debug_routes
@@ -35,3 +37,22 @@ def default_route(lang):
         url_api_endpoint_email_verification=url_email_verification, url_api_endpoint_account_creation=url_account_creation,
         voucher_enabled=voucher_enabled, voucher_required=voucher_required, url_api_endpoint_voucher_verification=url_voucher_verification,
         voucher_token=voucher)
+
+@APP.route('/voucher/', defaults={'lang': ''})
+@APP.route('/voucher/<string:lang>')
+def voucher_route(lang):
+    if lang:
+        # inject language from url as first choice into request
+        values = (lang, 10), *request.accept_languages
+        request.accept_languages = LanguageAccept(values)
+        flask_babel_refresh()
+    lang_used = "en"
+    locale = get_locale()
+    if locale is not None:
+        lang_used = locale.language
+
+    with open(path.join(APP.root_path, "templates", "voucher_list_entry_template.html")) as f:
+        voucher_list_entry_template = f.read()
+
+    vouchers = Voucher.query.all()
+    return render_template('voucher.html', lang = lang_used, vouchers=vouchers, voucher_list_entry_template=voucher_list_entry_template)

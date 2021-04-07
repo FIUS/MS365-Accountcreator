@@ -1,0 +1,43 @@
+<details id="voucher-list-element-{id}" voucher_id="{id}" obj="" edit="false">
+    <summary>
+        <div class="voucher-uses"></div>
+        <div class="voucher-name"></div>
+        <div class="voucher-buttons-top">
+            <button class="unicode-button" url="" onclick="copyToClipboard(this.getAttribute('url'))">&#128279;</button>
+            <button class="unicode-button">QR</button>
+        </div>
+    </summary>
+    <div class="details-content">
+        <div class="voucher-data">
+            <p class="voucher-description" readonly=true></p>
+            <label for="voucher-list-element-{id}-token">{token_text}</label>
+            <p id="voucher-list-element-{id}-token" type="text" class="voucher-token"></p>
+            <label for="voucher-list-element-{id}-user-lifetime">{user_lifetime_text}</label>
+            <p id="voucher-list-element-{id}-user-lifetime" type="text" class="voucher-user-lifetime"></p>
+            <div class="voucher-buttons-bottom">
+                <button class="voucher-button-edit" voucher_id="{id}" onclick="startEditing(this.getAttribute('voucher_id'))">{edit_text}</button>
+                <button class="voucher-button-delete" voucher_id="{id}" onclick="deleteVoucher(this.getAttribute('voucher_id'))">{delete_text}</button>
+            </div>
+        </div>
+        <form class="voucher-editor" voucher_id="{id}" onsubmit="return finishEditing(this.getAttribute('voucher_id'), event);">
+            <label for="voucher-list-element-{id}-editor-name">{name_text}</label>
+            <input id="voucher-list-element-{id}-editor-name" type="text" required/>
+            <label for="voucher-list-element-{id}-editor-description">{description_text}</label>
+            <textarea id="voucher-list-element-{id}-editor-description"></textarea>
+            <label for="voucher-list-element-{id}-editor-user-lifetime-enable">{user_lifetime_text}</label>
+            <div>
+                <input id="voucher-list-element-{id}-editor-user-lifetime-enable" type="checkbox" onchange="document.getElementById('voucher-list-element-{id}-editor-user-lifetime-value').disabled=!this.checked"/>
+                <input id="voucher-list-element-{id}-editor-user-lifetime-value" type="text" pattern="[0-9]+y[0-9][0-9]m[0-9][0-9]d [0-9][0-9]:[0-9][0-9]:[0-9][0-9]" title="0y00m00d 00:00:00" placeholder="0y00m00d 00:00:00"/>
+            </div>
+            <label for="voucher-list-element-{id}-editor-total-uses-enable">{total_uses_text}</label>
+            <div>
+                <input id="voucher-list-element-{id}-editor-total-uses-enable" type="checkbox" onchange="document.getElementById('voucher-list-element-{id}-editor-total-uses-value').disabled=!this.checked"/>
+                <input id="voucher-list-element-{id}-editor-total-uses-value" type="number" min="0"/>
+            </div>
+            <div class="voucher-buttons-bottom">
+                <button class="voucher-button-cancel" voucher_id="{id}" onclick="cancelEditing(this.getAttribute('voucher_id'))">{cancel_text}</button>
+                <input type="submit" class="voucher-button-save" value="{save_text}"/>
+            </div>
+        </form>
+    </div>
+</details>

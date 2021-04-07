@@ -114,7 +114,9 @@
     </div>
     <![endif]>
 
+    <script type="text/javascript" src="{{url_for('static', filename='common.js')}}"></script>
     <script>
+        const connection_error_text = "{{ gettext('There was an error while connecting to the server. Please try again later or contact the administrator of this site.') }}"
         const url_api_endpoint_voucher_verification = "{{url_api_endpoint_voucher_verification}}"
         const url_api_endpoint_email_verification = "{{url_api_endpoint_email_verification}}"
         const url_api_endpoint_account_creation = "{{url_api_endpoint_account_creation}}"
@@ -182,70 +184,6 @@
             }
             window.currentStep = next_step
             updateUiToCurrentStep()
-        }
-
-        function postData(url = '', data = {}) {
-            return fetch(url, {
-                method: 'POST',
-                mode: 'cors',
-                cache: 'no-cache',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'lang': lang
-                },
-                body: JSON.stringify(data)
-            });
-        }
-
-        function postDataAndProcess(url = '', data = {}, on_success = function(data) {}, on_failure = function(message){}) {
-            let resp = null
-            postData(url, data)
-                .then(response => {
-                    resp = response
-                    if(response.status == 204) {
-                        //Empty body
-                        return response.text();
-                    }
-                    return response.json()
-                })
-                .then(data => {
-                    let response = resp
-                    let content = data
-                    if(response.status == 204) {
-                        on_success(null)
-                    }else if(response.ok) {
-                        on_success(content)
-                    } else {
-                        let status = response.status
-                        let message = ""
-                        if(status == 422) {
-                            if((! "errors" in content) || (! content.errors.constructor == Object)) throw "Data format invalid"
-                            for (let key in content.errors) {
-                                value = content.errors[key]
-                                if(! value.constructor == Object) throw "Data format invalid" //Check for dict/object
-                                for (let innerkey in value) {
-                                    innervalue = value[innerkey]
-                                    if (! Array.isArray(innervalue)) throw "Data format invalid"
-                                    for(let i in innervalue) {
-                                        if(message.length > 0 && message.charAt(message.length -1) != ' ') {
-                                            message += ' '
-                                        }
-                                        message += innervalue[i]
-                                    }
-                                }
-                            }
-                        } else {
-                            if (! "message" in content) {
-                                throw "Data format invalid"
-                            }
-                            message = content.message
-                        }
-                        on_failure(message)
-                    }
-                })
-                .catch(() => {
-                    on_failure("{{ gettext('There was an error while connecting to the server. Please try again later or contact the administrator of this site.') }}")
-                });
         }
 
         function voucherSubmit(event) {

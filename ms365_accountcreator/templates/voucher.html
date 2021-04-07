@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>{{ gettext('MS365 Accountcreator Voucher List') }}</title>
+    <base href="{{url_for('default_route')}}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles_voucher.css')}}">
+    <!--link rel="icon" type="image/x-icon" href="favicon.ico"-->
+</head>
+
+<body>
+    <div class="title">
+        <div class="language-switcher">
+            <span>
+                <a href="{{url_for('default_route', lang='de')}}">de</a>
+                <span>/</span>
+                <a href="{{url_for('default_route', lang='en')}}">en</a>
+            </span>
+        </div>
+        <h1>{{ gettext('MS365 Accountcreator Voucher List') }}</h1>
+    </div>
+
+    <div class="top-button-container" id="top-button-container">
+        <button id="reload-button" class="unicode-button" onclick="updateList()"><div>&#8635;</div></button>
+        <button id="reload-button" class="unicode-button" onclick="startCreatingVoucher()"><div>+</div></button>
+    </div>
+    <div class="new-voucher-container" id="new-voucher-container" hide="true">
+        <form class="voucher-editor" onsubmit="return finishCreatingVoucher(event);">
+            <label for="voucher-list-element-new-editor-name">{{ gettext('Voucher Name') }}</label>
+            <input id="voucher-list-element-new-editor-name" type="text" required/>
+            <label for="voucher-list-element-new-editor-description">{{ gettext('description') }}</label>
+            <textarea id="voucher-list-element-new-editor-description"></textarea>
+            <label for="voucher-list-element-new-editor-user-lifetime-enable">{{ gettext('User lifetime') }}</label>
+            <div>
+                <input id="voucher-list-element-new-editor-user-lifetime-enable" type="checkbox" onchange="document.getElementById('voucher-list-element-new-editor-user-lifetime-value').disabled=!this.checked"/>
+                <input id="voucher-list-element-new-editor-user-lifetime-value" type="text" pattern="[0-9]+y[0-9][0-9]m[0-9][0-9]d [0-9][0-9]:[0-9][0-9]:[0-9][0-9]" title="0y00m00d 00:00:00" placeholder="0y00m00d 00:00:00"/>
+            </div>
+            <label for="voucher-list-element-new-editor-total-uses-enable">{{ gettext('Total Uses') }}</label>
+            <div>
+                <input id="voucher-list-element-new-editor-total-uses-enable" type="checkbox" onchange="document.getElementById('voucher-list-element-new-editor-total-uses-value').disabled=!this.checked"/>
+                <input id="voucher-list-element-new-editor-total-uses-value" type="number" min="0"/>
+            </div>
+            <div class="voucher-buttons-bottom">
+                <button class="voucher-button-cancel" onclick="cancelCreatingVoucher()">{{ gettext('Cancel') }}</button>
+                <input type="submit" class="voucher-button-save" value="{{ gettext('Create') }}"/>
+            </div>
+        </form>
+    </div>
+    <div class="voucher-list-container" id="voucher-list-container">
+
+    </div>
+    <div id="snackbar">Text</div>
+    <script type="text/javascript" src="{{url_for('static', filename='common.js')}}"></script>
+    <script>
+        const connection_error_text = "{{ gettext('There was an error while connecting to the server. Please try again later or contact the administrator of this site.') }}";
+        const description_text = "{{ gettext('description') }}";
+        const token_text = "{{ gettext('token') }}";
+        const user_lifetime_text = "{{ gettext('User lifetime') }}";
+        const edit_text = "{{ gettext('Edit') }}";
+        const delete_text = "{{ gettext('Delete') }}";
+        const name_text = "{{ gettext('Voucher Name') }}";
+        const total_uses_text = "{{ gettext('Total Uses') }}";
+        const save_text = "{{ gettext('Save') }}";
+        const cancel_text = "{{ gettext('Cancel') }}";
+        const voucher_list_entry_template = `{{ voucher_list_entry_template | safe }}`;
+        const url_voucher_list_entry_template = "{{url_for('static', filename='voucher_list_entry_template.html')}}";
+        const url_api_endpoint_voucher_list = "{{url_for('api-v1.VoucherList')}}";
+        const url_frontend = "{{url_for('default_route', _external=True)}}";
+        const lang = "{{lang}}";
+
+        String.prototype.format = function(params) {
+            a = this;
+            for (k in params) {
+                a = a.replaceAll("{" + k + "}", params[k]);
+            }
+            return a;
+        }
+
+        var currentVoucherIds = new Set();
+
+        function create_dom_object(htmlStr) {
+            var frag = document.createDocumentFragment(),
+                temp = document.createElement('div');
+            temp.innerHTML = htmlStr;
+            while (temp.firstChild) {
+                frag.appendChild(temp.firstChild);
+            }
+            return frag;
+        }
+
+        const YEAR_IN_SEC = 31536000
+        const MONTH_IN_SEC = 2592000
+        const DAY_IN_SEC = 86400
+        const HOUR_IN_SEC = 3600
+        const MIN_IN_SEC = 60
+
+        function humanReadableTimedelta(seconds, displayAll=false) {
+            secondsWoY = seconds % YEAR_IN_SEC;
+            years = (seconds - secondsWoY) / YEAR_IN_SEC;
+            secondsWoM = secondsWoY % MONTH_IN_SEC;
+            months = (secondsWoY - secondsWoM) / MONTH_IN_SEC;
+            secondsWoD = secondsWoM % DAY_IN_SEC;
+            days = (secondsWoM - secondsWoD) / DAY_IN_SEC;
+            secondsWoH = secondsWoD % HOUR_IN_SEC;
+            hours = (secondsWoD - secondsWoH) / HOUR_IN_SEC;
+            secondsWoMi = secondsWoH % MIN_IN_SEC;
+            minutes = (secondsWoH - secondsWoMi) / MIN_IN_SEC;
+
+            result = "";
+            largerUnitUsed = false;
+            if (displayAll || years > 0) {
+                result += years;
+                result += "y";
+                largerUnitUsed = true;
+            }
+
+            if (largerUnitUsed || months > 0) {
+                result += (months + "").padStart(2, '0');
+                result += "m";
+                largerUnitUsed = true;
+            }
+
+            if (largerUnitUsed ||days > 0) {
+                result += (days + "").padStart(2, '0');
+                result += "d ";
+            }
+
+            result += (hours + "").padStart(2, '0');
+            result += ":";
+
+            result += (minutes + "").padStart(2, '0');
+            result += ":";
+
+            result += (secondsWoMi + "").padStart(2, '0');
+
+            return result;
+        }
+
+        function parseFullHumanReadableTimedelta(string) {
+            parts = string.split("y")
+            years = parseInt(parts[0])
+            parts = parts[1].split("m")
+            months = parseInt(parts[0])
+            parts = parts[1].split("d ")
+            days = parseInt(parts[0])
+            parts = parts[1].split(":")
+            hours = parseInt(parts[0])
+            minutes = parseInt(parts[1])
+            seconds = parseInt(parts[2])
+
+            return (years * YEAR_IN_SEC) + (months * MONTH_IN_SEC) + (days * DAY_IN_SEC) + (hours * HOUR_IN_SEC) + (minutes * MIN_IN_SEC) + seconds;
+        }
+
+        function setVoucherListElementData(target, voucher) {
+            console.log(domObj);
+            url = new URL(url_frontend);
+            url.searchParams.append("voucher", voucher.token);
+
+            if(typeof target.setAttribute !== "function") {
+                domObj = target.querySelector('details');
+            } else {
+                domObj = target;
+            }
+
+            domObj.setAttribute('obj', JSON.stringify(voucher));
+
+            voucherUsesData = voucher.voucherCurrentUses + "/" + (voucher.voucherTotalUses == null ? '&#8734;' : voucher.voucherTotalUses);
+            domObj.querySelector('.voucher-uses').innerHTML = voucherUsesData;
+            domObj.querySelector('.voucher-name').innerHTML = voucher.name;
+
+            domObj.querySelector('.unicode-button').setAttribute('url', url.toString());
+
+            domObj.querySelector('.voucher-token').innerHTML = voucher.token;
+            domObj.querySelector('.voucher-description').innerHTML = voucher.description;
+
+            voucherUserLiftetimeData = voucher.userLifetime == null ? '&#8734;' : humanReadableTimedelta(voucher.userLifetime);
+            domObj.querySelector('.voucher-user-lifetime').innerHTML = voucherUserLiftetimeData;
+        }
+
+        function addVoucherEntry(voucher) {
+            console.log("Add:", voucher)
+            currentVoucherIds.add(voucher.id);
+            domObj = create_dom_object(voucher_list_entry_template.format({
+                'id': voucher.id,
+                'description_text': description_text,
+                'token_text': token_text,
+                'user_lifetime_text': user_lifetime_text,
+                'edit_text': edit_text,
+                'delete_text': delete_text,
+                'name_text': name_text,
+                'total_uses_text': total_uses_text,
+                'save_text': save_text,
+                'cancel_text': cancel_text,
+            }));
+            setVoucherListElementData(domObj, voucher);
+            let container = document.getElementById("voucher-list-container");
+            let nextChild = null;
+            let nextChildId = 0;
+            for(child of container.children) {
+                childVoucherId = child.getAttribute("voucher_id");
+                if(childVoucherId > voucher.id) {
+                    if(nextChild == null || nextChildId > childVoucherId) {
+                        nextChild = child;
+                        nextChildId = childVoucherId;
+                    }
+                }
+            }
+            if(nextChild == null) {
+                container.appendChild(domObj);
+            } else {
+                container.insertBefore(domObj, nextChild);
+            }
+        }
+
+        function getEntryElement(voucher_id) {
+            return document.getElementById("voucher-list-element-" + voucher_id);
+        }
+
+        function removeVoucherEntry(voucher_id) {
+            console.log("Remove:", voucher_id)
+            currentVoucherIds.delete(voucher_id);
+            let container = document.getElementById("voucher-list-container");
+            container.removeChild(getEntryElement(voucher_id));
+        }
+
+        function updateVoucherEntry(voucher) {
+            console.log("Update:", voucher)
+            setVoucherListElementData(getEntryElement(voucher.id), voucher);
+        }
+
+        function processNewData(data) {
+            voucherIdsThatShouldExist = [];
+            for (let voucher of data) {
+                voucherIdsThatShouldExist.push(voucher.id);
+                if(currentVoucherIds.has(voucher.id)) {
+                    updateVoucherEntry(voucher);
+                } else {
+                    addVoucherEntry(voucher);
+                }
+            }
+
+            for (let id of currentVoucherIds) {
+                if(! voucherIdsThatShouldExist.includes(id)) {
+                    removeVoucherEntry(id);
+                }
+            }
+        }
+
+        function sleep(milliseconds) {
+            return new Promise(resolve => setTimeout(resolve, milliseconds));
+        }
+
+        function updateList() {
+            document.getElementById('reload-button').setAttribute('loading', 'true');
+            afterSleepPromise = sleep(800);
+            getDataAndProcess(url_api_endpoint_voucher_list,
+                async function(data) {
+                    if (Array.isArray(data)) {
+                        try {
+                            processNewData(data)
+                            await afterSleepPromise //So that the reload animation is visible at least for a moment
+                            document.getElementById('reload-button').setAttribute('loading', 'false');
+                        } catch (e) {
+                            console.error(e)
+                            alert("{{ gettext('There was an error processing the data. Please try again later or contact the administrator of this site.') }}")
+                        }
+                    } else {
+                        throw "Illegal data format"
+                    }
+                },
+                function(message) {
+                    alert(message)
+                }
+            )
+        }
+        window.onload = updateList
+
+        function deleteVoucher(voucher_id) {
+            voucher = JSON.parse(getEntryElement(voucher_id).getAttribute('obj'))
+            deleteDataAndProcess(voucher.links.self,
+                function(data) {
+                    try {
+                        updateList()
+                    } catch (e) {
+                        console.error(e)
+                        alert("{{ gettext('There was an error updating the list. Please refresh manually.') }}")
+                    }
+                },
+                function(message) {
+                    alert(message)
+                }
+            );
+        }
+
+        function startCreatingVoucher() {
+            element = document.getElementById("new-voucher-container");
+            document.getElementById("voucher-list-element-new-editor-user-lifetime-value").disabled = true;
+            document.getElementById("voucher-list-element-new-editor-user-lifetime-value").value = humanReadableTimedelta(0, true);
+            document.getElementById("voucher-list-element-new-editor-total-uses-value").disabled = true;
+            document.getElementById("voucher-list-element-new-editor-total-uses-value").value = humanReadableTimedelta(0, true);
+
+            element.setAttribute('hide', "false");
+        }
+
+        function cancelCreatingVoucher() {
+            element = document.getElementById("new-voucher-container");
+            element.setAttribute('hide', "true");
+        }
+
+        function finishCreatingVoucher(event) {
+            event.preventDefault();
+            element = document.getElementById("new-voucher-container");
+
+            data = {}
+            data["name"] = document.getElementById("voucher-list-element-new-editor-name").value;
+            data["description"] = document.getElementById("voucher-list-element-new-editor-description").value;
+
+            if(document.getElementById("voucher-list-element-new-editor-user-lifetime-enable").checked) {
+                data["userLifetime"] = parseFullHumanReadableTimedelta(document.getElementById("voucher-list-element-new-editor-user-lifetime-value").value)
+            }
+
+            if(document.getElementById("voucher-list-element-new-editor-total-uses-enable").checked) {
+                data["voucherTotalUses"] = document.getElementById("voucher-list-element-new-editor-total-uses-value").value
+            }
+
+            postDataAndProcess(url_api_endpoint_voucher_list, data,
+                function(data) {
+                    try {
+                        updateList()
+                    } catch (e) {
+                        console.error(e)
+                        alert("{{ gettext('There was an error updating the list. Please refresh manually.') }}")
+                    }
+                },
+                function(message) {
+                    alert(message)
+                }
+            );
+
+            element.setAttribute('hide', "true");
+            return false;
+        }
+
+        function startEditing(voucher_id) {
+            element = getEntryElement(voucher_id);
+            voucher = JSON.parse(element.getAttribute('obj'));
+            document.getElementById("voucher-list-element-" + voucher_id + "-editor-name").value = voucher.name;
+            document.getElementById("voucher-list-element-" + voucher_id + "-editor-description").value = voucher.description;
+            if(voucher.userLifetime == null) {
+                document.getElementById("voucher-list-element-" + voucher_id + "-editor-user-lifetime-enable").checked = false;
+                document.getElementById("voucher-list-element-" + voucher_id + "-editor-user-lifetime-value").disabled = true;
+                document.getElementById("voucher-list-element-" + voucher_id + "-editor-user-lifetime-value").value = humanReadableTimedelta(0, true);
+            } else {
+                document.getElementById("voucher-list-element-" + voucher_id + "-editor-user-lifetime-enable").checked = true;
+                document.getElementById("voucher-list-element-" + voucher_id + "-editor-user-lifetime-value").disabled = false;
+                document.getElementById("voucher-list-element-" + voucher_id + "-editor-user-lifetime-value").value = humanReadableTimedelta(voucher.userLifetime, true);
+            }
+
+            if(voucher.voucherTotalUses == null) {
+                document.getElementById("voucher-list-element-" + voucher_id + "-editor-total-uses-enable").checked = false;
+                document.getElementById("voucher-list-element-" + voucher_id + "-editor-total-uses-value").disabled = true;
+                document.getElementById("voucher-list-element-" + voucher_id + "-editor-total-uses-value").value = 0;
+            } else {
+                document.getElementById("voucher-list-element-" + voucher_id + "-editor-total-uses-enable").checked = true;
+                document.getElementById("voucher-list-element-" + voucher_id + "-editor-total-uses-value").disabled = false;
+                document.getElementById("voucher-list-element-" + voucher_id + "-editor-total-uses-value").value = voucher.voucherTotalUses;
+            }
+
+            element.setAttribute('edit', "true");
+        }
+
+        function cancelEditing(voucher_id) {
+            element = getEntryElement(voucher_id);
+            element.setAttribute('edit', "false");
+        }
+
+        function finishEditing(voucher_id, event) {
+            event.preventDefault();
+            element = getEntryElement(voucher_id);
+            voucher = JSON.parse(getEntryElement(voucher_id).getAttribute('obj'))
+
+            data = {}
+            data["name"] = document.getElementById("voucher-list-element-" + voucher_id + "-editor-name").value;
+            data["description"] = document.getElementById("voucher-list-element-" + voucher_id + "-editor-description").value;
+
+            if(document.getElementById("voucher-list-element-" + voucher_id + "-editor-user-lifetime-enable").checked) {
+                data["userLifetime"] = parseFullHumanReadableTimedelta(document.getElementById("voucher-list-element-" + voucher_id + "-editor-user-lifetime-value").value)
+            }
+
+            if(document.getElementById("voucher-list-element-" + voucher_id + "-editor-total-uses-enable").checked) {
+                data["voucherTotalUses"] = document.getElementById("voucher-list-element-" + voucher_id + "-editor-total-uses-value").value
+            }
+
+            updateDataAndProcess(voucher.links.self, data,
+                function(data) {
+                    try {
+                        updateList()
+                    } catch (e) {
+                        console.error(e)
+                        alert("{{ gettext('There was an error updating the list. Please refresh manually.') }}")
+                    }
+                },
+                function(message) {
+                    alert(message)
+                }
+            );
+
+            element.setAttribute('edit', "false");
+            return false;
+        }
+
+    </script>
+</body>
+</html>
