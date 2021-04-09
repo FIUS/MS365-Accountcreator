@@ -3,8 +3,8 @@
         <div class="voucher-uses"></div>
         <div class="voucher-name"></div>
         <div class="voucher-buttons-top">
-            <button class="unicode-button" url="" onclick="copyToClipboard(this.getAttribute('url'))">&#128279;</button>
-            <button class="unicode-button">QR</button>
+            <button id="copy-button" class="unicode-button" url="" onclick="copyToClipboard(this.getAttribute('url'))">&#128279;</button>
+            <button id="qr-button" class="unicode-button" url="" onclick="openQrCode(this.getAttribute('url'))">QR</button>
         </div>
     </summary>
     <div class="details-content">

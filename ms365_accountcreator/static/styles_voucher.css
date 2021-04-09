@@ -193,8 +193,11 @@ details:not([edit=true]) > .details-content > .voucher-editor{
 
 .unicode-button {
     display: inline-block;
-    padding: 2px 6px;
+    padding: 2px 2px;
     margin: 0;
+    line-height: 1.75rem;
+    min-width: 2rem;
+    text-align: center;
     font-size: 1.3rem;
     color: white;
     background-color: #004191;
@@ -241,6 +244,35 @@ details:not([edit=true]) > .details-content > .voucher-editor{
     margin-right: 0.3rem;
 }
 
+/* QR Code Popup */
+
+#qrcodePopup {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #00BEFF;
+    border-style: solid;
+    border-radius: 0.2rem;
+    border-color: #333;
+    border-width: 0.2rem;
+    padding: 0.4rem;
+    z-index: 1;
+}
+
+#qrcodePopup[hide=true] {
+    display: none;
+}
+
+#qrcodeButtons {
+    margin-bottom: 0.4rem;
+    display: flex;
+}
+
+#qrcodeButtonClose {
+    margin-left: auto;
+}
+
 /* Snackbar / Toast */
 
 #snackbar {
@@ -252,7 +284,7 @@ details:not([edit=true]) > .details-content > .voucher-editor{
     border-radius: 2px;
     padding: 16px;
     position: fixed;
-    z-index: 1;
+    z-index: 2;
     left: 50%;
     bottom: 30px;
     font-size: 17px;

@@ -52,7 +52,16 @@
 
     </div>
     <div id="snackbar">Text</div>
+    <div id="qrcodePopup" hide="true">
+        <a id="qrcodeDownloadLink" download="qrcode.png" target="_blank"></a>
+        <div id=qrcodeButtons>
+            <button class="unicode-button" onclick="downloadQrCode()">&#11123;</button>
+            <button id="qrcodeButtonClose" class="unicode-button" onclick="this.parentNode.parentNode.setAttribute('hide', 'true')">&#128473;</button>
+        </div>
+        <div id="qrcode"></div>
+    </div>
     <script type="text/javascript" src="{{url_for('static', filename='common.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='qrcode.min.js')}}"></script>
     <script>
         const connection_error_text = "{{ gettext('There was an error while connecting to the server. Please try again later or contact the administrator of this site.') }}";
         const description_text = "{{ gettext('description') }}";
@@ -170,7 +179,8 @@
             domObj.querySelector('.voucher-uses').innerHTML = voucherUsesData;
             domObj.querySelector('.voucher-name').innerHTML = voucher.name;
 
-            domObj.querySelector('.unicode-button').setAttribute('url', url.toString());
+            domObj.querySelector('#copy-button').setAttribute('url', url.toString());
+            domObj.querySelector('#qr-button').setAttribute('url', url.toString());
 
             domObj.querySelector('.voucher-token').innerHTML = voucher.token;
             domObj.querySelector('.voucher-description').innerHTML = voucher.description;
@@ -409,6 +419,34 @@
 
             element.setAttribute('edit', "false");
             return false;
+        }
+
+        const qrCode = new QRCode(document.getElementById("qrcode"), {
+            text: "text",
+            width: 300,
+            height: 300,
+            colorDark : "#000000",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.L
+        });
+
+        function openQrCode(url) {
+            qrCode.clear();
+            qrCode.makeCode(url);
+            document.getElementById("qrcodePopup").setAttribute('hide', "false");
+        }
+
+        window.onkeydown= function(gfg){
+            if(gfg.keyCode === 27) { //Escape
+                document.getElementById("qrcodePopup").setAttribute('hide', "true");
+            }
+        }
+
+        function downloadQrCode() {
+            data = document.getElementById("qrcode").querySelector('img').getAttribute('src');
+            link = document.getElementById("qrcodeDownloadLink");
+            link.setAttribute('href', data);
+            link.click();
         }
 
     </script>
