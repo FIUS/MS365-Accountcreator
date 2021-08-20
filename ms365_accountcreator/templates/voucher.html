@@ -34,12 +34,17 @@
             <textarea id="voucher-list-element-new-editor-description"></textarea>
             <label for="voucher-list-element-new-editor-user-lifetime-enable">{{ gettext('User lifetime') }}</label>
             <div>
-                <input id="voucher-list-element-new-editor-user-lifetime-enable" type="checkbox" onchange="document.getElementById('voucher-list-element-new-editor-user-lifetime-value').disabled=!this.checked"/>
+                <input id="voucher-list-element-new-editor-user-lifetime-enable" type="checkbox" onchange="voucherEditorCheckBoxChanged('voucher-list-element-new', 'user-lifetime', this.checked)"/>
                 <input id="voucher-list-element-new-editor-user-lifetime-value" type="text" pattern="[0-9]+y[0-9][0-9]m[0-9][0-9]d [0-9][0-9]:[0-9][0-9]:[0-9][0-9]" title="0y00m00d 00:00:00" placeholder="0y00m00d 00:00:00"/>
+            </div>
+            <label for="voucher-list-element-new-editor-user-deletion-date-enable">{{ gettext('User deletion date') }}</label>
+            <div>
+                <input id="voucher-list-element-new-editor-user-deletion-date-enable" type="checkbox" onchange="voucherEditorCheckBoxChanged('voucher-list-element-new', 'user-deletion-date', this.checked)"/>
+                <input id="voucher-list-element-new-editor-user-deletion-date-value" type="date"/>
             </div>
             <label for="voucher-list-element-new-editor-total-uses-enable">{{ gettext('Total Uses') }}</label>
             <div>
-                <input id="voucher-list-element-new-editor-total-uses-enable" type="checkbox" onchange="document.getElementById('voucher-list-element-new-editor-total-uses-value').disabled=!this.checked"/>
+                <input id="voucher-list-element-new-editor-total-uses-enable" type="checkbox" onchange="voucherEditorCheckBoxChanged('voucher-list-element-new', 'total-uses', this.checked)"/>
                 <input id="voucher-list-element-new-editor-total-uses-value" type="number" min="0"/>
             </div>
             <div class="voucher-buttons-bottom">
@@ -67,6 +72,7 @@
         const description_text = "{{ gettext('description') }}";
         const token_text = "{{ gettext('token') }}";
         const user_lifetime_text = "{{ gettext('User lifetime') }}";
+        const user_deletion_date_text = "{{ gettext('User deletion date') }}";
         const edit_text = "{{ gettext('Edit') }}";
         const delete_text = "{{ gettext('Delete') }}";
         const name_text = "{{ gettext('Voucher Name') }}";
@@ -79,12 +85,22 @@
         const url_frontend = "{{url_for('default_route', _external=True)}}";
         const lang = "{{lang}}";
 
+        const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+        const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)
+
         String.prototype.format = function(params) {
             a = this;
             for (k in params) {
                 a = a.replaceAll("{" + k + "}", params[k]);
             }
             return a;
+        }
+
+        Date.prototype.toStandardDateString = function(params) {
+            let mon = this.getMonth()+1 < 10 ? '0' + (this.getMonth()+1) : (this.getMonth()+1);
+            let day = this.getDate() < 10 ? '0' + this.getDate() : this.getDate();
+            return this.getFullYear() + "-" + mon + "-" + day;
         }
 
         var currentVoucherIds = new Set();
@@ -187,6 +203,21 @@
 
             voucherUserLiftetimeData = voucher.userLifetime == null ? '&#8734;' : humanReadableTimedelta(voucher.userLifetime);
             domObj.querySelector('.voucher-user-lifetime').innerHTML = voucherUserLiftetimeData;
+
+            let date = new Date(voucher.userDeletionDate * 1000);
+            domObj.querySelector('.voucher-user-deletion-date').innerHTML = date.toLocaleDateString();
+
+            if(voucher.userDeletionDate != null && voucher.userLifetime == null) {
+                domObj.querySelector('.voucher-user-deletion-date').setAttribute('hide', "false");
+                domObj.querySelector('.voucher-user-deletion-date-label').setAttribute('hide', "false");
+                domObj.querySelector('.voucher-user-lifetime').setAttribute('hide', "true");
+                domObj.querySelector('.voucher-user-lifetime-label').setAttribute('hide', "true");
+            } else {
+                domObj.querySelector('.voucher-user-deletion-date').setAttribute('hide', "true");
+                domObj.querySelector('.voucher-user-deletion-date-label').setAttribute('hide', "true");
+                domObj.querySelector('.voucher-user-lifetime').setAttribute('hide', "false");
+                domObj.querySelector('.voucher-user-lifetime-label').setAttribute('hide', "false");
+            }
         }
 
         function addVoucherEntry(voucher) {
@@ -197,6 +228,7 @@
                 'description_text': description_text,
                 'token_text': token_text,
                 'user_lifetime_text': user_lifetime_text,
+                'user_deletion_date_text': user_deletion_date_text,
                 'edit_text': edit_text,
                 'delete_text': delete_text,
                 'name_text': name_text,
@@ -221,6 +253,18 @@
                 container.appendChild(domObj);
             } else {
                 container.insertBefore(domObj, nextChild);
+            }
+        }
+
+        function voucherEditorCheckBoxChanged(elementPrefix, kind, checked) {
+            document.getElementById(elementPrefix + '-editor-' + kind + '-value').disabled=!checked
+            if (kind == "user-lifetime" && checked) {
+                document.getElementById(elementPrefix + '-editor-user-deletion-date-enable').checked = false
+                voucherEditorCheckBoxChanged(elementPrefix, 'user-deletion-date', false)
+            }
+            if (kind == "user-deletion-date" && checked) {
+                document.getElementById(elementPrefix + '-editor-user-lifetime-enable').checked = false
+                voucherEditorCheckBoxChanged(elementPrefix, 'user-lifetime', false)
             }
         }
 
@@ -306,10 +350,20 @@
 
         function startCreatingVoucher() {
             element = document.getElementById("new-voucher-container");
-            document.getElementById("voucher-list-element-new-editor-user-lifetime-value").disabled = true;
-            document.getElementById("voucher-list-element-new-editor-user-lifetime-value").value = humanReadableTimedelta(0, true);
-            document.getElementById("voucher-list-element-new-editor-total-uses-value").disabled = true;
-            document.getElementById("voucher-list-element-new-editor-total-uses-value").value = humanReadableTimedelta(0, true);
+
+            // Do not reset create dialog for now: Allows reusing values
+            //document.getElementById("voucher-list-element-new-editor-name").value = "";
+            //document.getElementById("voucher-list-element-new-editor-description").value = "";
+            //document.getElementById("voucher-list-element-new-editor-user-lifetime-enable").checked = false;
+            //document.getElementById("voucher-list-element-new-editor-user-lifetime-value").disabled = true;
+            //document.getElementById("voucher-list-element-new-editor-user-lifetime-value").value = humanReadableTimedelta(0, true);
+            //document.getElementById("voucher-list-element-new-editor-user-deletion-date-enable").checked = false;
+            //document.getElementById("voucher-list-element-new-editor-user-deletion-date-value").disabled = true;
+            //document.getElementById("voucher-list-element-new-editor-user-deletion-date-value").value = tomorrow.toStandardDateString();
+            //document.getElementById("voucher-list-element-new-editor-user-deletion-date-value").min = today.toStandardDateString();
+            //document.getElementById("voucher-list-element-new-editor-total-uses-enable").checked = false;
+            //document.getElementById("voucher-list-element-new-editor-total-uses-value").disabled = true;
+            //document.getElementById("voucher-list-element-new-editor-total-uses-value").value = "0";
 
             element.setAttribute('hide', "false");
         }
@@ -329,6 +383,10 @@
 
             if(document.getElementById("voucher-list-element-new-editor-user-lifetime-enable").checked) {
                 data["userLifetime"] = parseFullHumanReadableTimedelta(document.getElementById("voucher-list-element-new-editor-user-lifetime-value").value)
+            }
+
+            if(document.getElementById("voucher-list-element-new-editor-user-deletion-date-enable").checked) {
+                data["userDeletionDate"] = document.getElementById("voucher-list-element-new-editor-user-deletion-date-value").valueAsNumber / 1000
             }
 
             if(document.getElementById("voucher-list-element-new-editor-total-uses-enable").checked) {
@@ -368,6 +426,16 @@
                 document.getElementById("voucher-list-element-" + voucher_id + "-editor-user-lifetime-value").value = humanReadableTimedelta(voucher.userLifetime, true);
             }
 
+            if(voucher.userDeletionDate == null) {
+                document.getElementById("voucher-list-element-" + voucher_id + "-editor-user-deletion-date-enable").checked = false;
+                document.getElementById("voucher-list-element-" + voucher_id + "-editor-user-deletion-date-value").disabled = true;
+                document.getElementById("voucher-list-element-" + voucher_id + "-editor-user-deletion-date-value").value = tomorrow.toStandardDateString()
+            } else {
+                document.getElementById("voucher-list-element-" + voucher_id + "-editor-user-deletion-date-enable").checked = true;
+                document.getElementById("voucher-list-element-" + voucher_id + "-editor-user-deletion-date-value").disabled = false;
+                document.getElementById("voucher-list-element-" + voucher_id + "-editor-user-deletion-date-value").value = new Date(voucher.userDeletionDate * 1000).toStandardDateString()
+            }
+
             if(voucher.voucherTotalUses == null) {
                 document.getElementById("voucher-list-element-" + voucher_id + "-editor-total-uses-enable").checked = false;
                 document.getElementById("voucher-list-element-" + voucher_id + "-editor-total-uses-value").disabled = true;
@@ -397,6 +465,10 @@
 
             if(document.getElementById("voucher-list-element-" + voucher_id + "-editor-user-lifetime-enable").checked) {
                 data["userLifetime"] = parseFullHumanReadableTimedelta(document.getElementById("voucher-list-element-" + voucher_id + "-editor-user-lifetime-value").value)
+            }
+
+            if(document.getElementById("voucher-list-element-" + voucher_id + "-editor-user-deletion-date-enable").checked) {
+                data["userDeletionDate"] = document.getElementById("voucher-list-element-" + voucher_id + "-editor-user-deletion-date-value").valueAsNumber / 1000
             }
 
             if(document.getElementById("voucher-list-element-" + voucher_id + "-editor-total-uses-enable").checked) {

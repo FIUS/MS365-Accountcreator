@@ -12,14 +12,24 @@ from . import STD_STRING_SIZE
 
 __all__ = ['Voucher', 'VoucherLicense', 'VoucherGroup']
 
-alphabet = "23456789abcdefghijkmnpqrstuvwxyz"
-
 token_bits = APP.config["VOUCHER_TOKEN_BITS"]
 token_bytes = int((((8 - (token_bits % 8))%8) + token_bits) / 8)
 
 class Voucher(DB.Model):
     """
     The representation of a Voucher
+
+    It has:
+     id: internal id
+     token: token which is given to users
+     name: name only seen by admin
+     description: description only seen by admin
+     user_lifetime: Time in seconds users live after creation by this token. None for forever
+     user_deletion_date: Unix-Timestamp for when the user should be deleted. None for never
+     voucher_total_uses: The number of uses this voucher has. None for infinte
+     voucher_current_uses: the number of uses this voucher currently has.
+
+    If both user_lifetime and user_deletion_date are set, user_lifetime takes precendence
     """
 
     __tablename__ = 'Voucher'
@@ -29,17 +39,19 @@ class Voucher(DB.Model):
     name: str = DB.Column(DB.String(STD_STRING_SIZE), nullable=False)
     description: str = DB.Column(DB.Text(), nullable=False, default="")
     user_lifetime: int = DB.Column(DB.Integer, nullable=True)
+    user_deletion_date: int = DB.Column(DB.Integer, nullable=True)
     voucher_total_uses: int = DB.Column(DB.Integer, nullable=True)
     voucher_current_uses: int = DB.Column(DB.Integer, nullable=False, default=0)
 
-    def __init__(self, name: str, description: str, user_lifetime: int = None, voucher_total_uses: int = None):
+    def __init__(self, name: str, description: str, user_lifetime: int = None, user_deletion_date: int = None, voucher_total_uses: int = None):
         self.token = randbits(token_bits).to_bytes(token_bytes, 'little')
-        self.update(name, description, user_lifetime, voucher_total_uses)
+        self.update(name, description, user_lifetime, user_deletion_date, voucher_total_uses)
 
-    def update(self, name: str, description: str, user_lifetime: int = None, voucher_total_uses: int = None):
+    def update(self, name: str, description: str, user_lifetime: int = None, user_deletion_date: int = None, voucher_total_uses: int = None):
         self.name = name
         self.description = description
         self.user_lifetime = user_lifetime
+        self.user_deletion_date = user_deletion_date
         self.voucher_total_uses = voucher_total_uses
 
     @staticmethod

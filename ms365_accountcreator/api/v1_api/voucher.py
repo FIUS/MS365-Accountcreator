@@ -23,6 +23,7 @@ class VoucherData():
         self.name = voucher_db_obj.name
         self.description = voucher_db_obj.description
         self.user_lifetime = voucher_db_obj.user_lifetime
+        self.user_deletion_date = voucher_db_obj.user_deletion_date
         self.voucher_total_uses = voucher_db_obj.voucher_total_uses
         self.token_encoded = voucher_db_obj.token_encoded
         self.voucher_current_uses = voucher_db_obj.voucher_current_uses

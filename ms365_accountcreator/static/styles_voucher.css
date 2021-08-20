@@ -158,6 +158,10 @@ input:valid:not([type="submit"]) {
     flex-direction: column;
 }
 
+.hideable[hide=true] {
+    display: none;
+}
+
 .voucher-data > label {
     margin: 0.2rem;
 }

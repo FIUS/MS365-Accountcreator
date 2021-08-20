@@ -12,8 +12,10 @@
             <p class="voucher-description" readonly=true></p>
             <label for="voucher-list-element-{id}-token">{token_text}</label>
             <p id="voucher-list-element-{id}-token" type="text" class="voucher-token"></p>
-            <label for="voucher-list-element-{id}-user-lifetime">{user_lifetime_text}</label>
-            <p id="voucher-list-element-{id}-user-lifetime" type="text" class="voucher-user-lifetime"></p>
+            <label for="voucher-list-element-{id}-user-lifetime" class="hideable voucher-user-lifetime-label">{user_lifetime_text}</label>
+            <p id="voucher-list-element-{id}-user-lifetime" type="text" class="hideable voucher-user-lifetime"></p>
+            <label for="voucher-list-element-{id}-user-deletion-date" class="hideable voucher-user-deletion-date-label">{user_deletion_date_text}</label>
+            <p id="voucher-list-element-{id}-user-deletion-date" type="text" class="hideable voucher-user-deletion-date"></p>
             <div class="voucher-buttons-bottom">
                 <button class="voucher-button-edit" voucher_id="{id}" onclick="startEditing(this.getAttribute('voucher_id'))">{edit_text}</button>
                 <button class="voucher-button-delete" voucher_id="{id}" onclick="deleteVoucher(this.getAttribute('voucher_id'))">{delete_text}</button>
@@ -26,12 +28,17 @@
             <textarea id="voucher-list-element-{id}-editor-description"></textarea>
             <label for="voucher-list-element-{id}-editor-user-lifetime-enable">{user_lifetime_text}</label>
             <div>
-                <input id="voucher-list-element-{id}-editor-user-lifetime-enable" type="checkbox" onchange="document.getElementById('voucher-list-element-{id}-editor-user-lifetime-value').disabled=!this.checked"/>
+                <input id="voucher-list-element-{id}-editor-user-lifetime-enable" type="checkbox" onchange="voucherEditorCheckBoxChanged('voucher-list-element-{id}', 'user-lifetime', this.checked)"/>
                 <input id="voucher-list-element-{id}-editor-user-lifetime-value" type="text" pattern="[0-9]+y[0-9][0-9]m[0-9][0-9]d [0-9][0-9]:[0-9][0-9]:[0-9][0-9]" title="0y00m00d 00:00:00" placeholder="0y00m00d 00:00:00"/>
+            </div>
+            <label for="voucher-list-element-{id}-editor-user-deletion-date-enable">{user_deletion_date_text}</label>
+            <div>
+                <input id="voucher-list-element-{id}-editor-user-deletion-date-enable" type="checkbox" onchange="voucherEditorCheckBoxChanged('voucher-list-element-{id}', 'user-deletion-date', this.checked)"/>
+                <input id="voucher-list-element-{id}-editor-user-deletion-date-value" type="date"/>
             </div>
             <label for="voucher-list-element-{id}-editor-total-uses-enable">{total_uses_text}</label>
             <div>
-                <input id="voucher-list-element-{id}-editor-total-uses-enable" type="checkbox" onchange="document.getElementById('voucher-list-element-{id}-editor-total-uses-value').disabled=!this.checked"/>
+                <input id="voucher-list-element-{id}-editor-total-uses-enable" type="checkbox" onchange="voucherEditorCheckBoxChanged('voucher-list-element-{id}', 'total-uses', this.checked)"/>
                 <input id="voucher-list-element-{id}-editor-total-uses-value" type="number" min="0"/>
             </div>
             <div class="voucher-buttons-bottom">
