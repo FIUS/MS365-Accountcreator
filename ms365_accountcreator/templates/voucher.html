@@ -25,6 +25,8 @@
     <div class="top-button-container" id="top-button-container">
         <button id="reload-button" class="unicode-button" onclick="updateList()"><div>&#8635;</div></button>
         <button id="reload-button" class="unicode-button" onclick="startCreatingVoucher()"><div>+</div></button>
+        <label for="search">{{ gettext('Search') }}</label>
+        <input id="search" type="text" oninput="updateListeEntriesVisibility()"/>
     </div>
     <div class="new-voucher-container" id="new-voucher-container" hide="true">
         <form class="voucher-editor" onsubmit="return finishCreatingVoucher(event);">
@@ -314,6 +316,7 @@
                     if (Array.isArray(data)) {
                         try {
                             processNewData(data)
+                            updateListeEntriesVisibility()
                             await afterSleepPromise //So that the reload animation is visible at least for a moment
                             document.getElementById('reload-button').setAttribute('loading', 'false');
                         } catch (e) {
@@ -330,6 +333,19 @@
             )
         }
         window.onload = updateList
+
+        function updateListeEntriesVisibility() {
+            searchString = document.getElementById("search").value
+            for (let id of currentVoucherIds) {
+                element = document.getElementById("voucher-list-element-" + id)
+                voucher = JSON.parse(element.getAttribute("obj"))
+                if(searchString.length == 0 || voucher.name.includes(searchString) || voucher.description.includes(searchString)) {
+                    element.setAttribute('hide', "false");
+                } else {
+                    element.setAttribute('hide', "true");
+                }
+            }
+        }
 
         function deleteVoucher(voucher_id) {
             voucher = JSON.parse(getEntryElement(voucher_id).getAttribute('obj'))
