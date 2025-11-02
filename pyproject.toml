@@ -5,6 +5,7 @@ description = "A small python flask server to allow users to sign up to a Micros
 authors = ["Tim Neumann <neumantm@fius.informatik.uni-stuttgart.de>"]
 license = "Mozilla Public License 2.0"
 readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.7"
