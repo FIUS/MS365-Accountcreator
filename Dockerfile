@@ -1,17 +1,20 @@
-FROM tiangolo/uwsgi-nginx-flask:python3.8
+FROM tiangolo/uwsgi-nginx-flask:python3.9
 
 RUN apt-get update && \
     apt-get install -y ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+ENV POETRY_HOME=/opt/poetry
+RUN python3 -m venv $POETRY_HOME
+RUN $POETRY_HOME/bin/pip install poetry==2.0.0
+RUN $POETRY_HOME/bin/poetry --version
 
 WORKDIR /app
 
 COPY pyproject.toml /app/
 COPY poetry.lock /app/
-RUN /root/.poetry/bin/poetry config virtualenvs.create false
-RUN /root/.poetry/bin/poetry install
+RUN $POETRY_HOME/bin/poetry config virtualenvs.create false
+RUN $POETRY_HOME/bin/poetry install
 
 RUN mkdir --parents /app/ms365_accountcreator
 RUN mkdir --parents /app/instance
@@ -22,9 +25,9 @@ COPY docker/ms365_accountcreator.conf /app/instance
 COPY docker/logging_config.json /app/
 COPY ms365_accountcreator /app/ms365_accountcreator
 
-ENV STATIC_PATH /app/ms365_accountcreator/static
-ENV FLASK_APP ms365_accountcreator
-ENV MODE production
-ENV CONFIG_FILE /app-mnt/ms365_accountcreator.conf
+ENV STATIC_PATH=/app/ms365_accountcreator/static
+ENV FLASK_APP=ms365_accountcreator
+ENV MODE=production
+ENV CONFIG_FILE=/app-mnt/ms365_accountcreator.conf
 
-RUN /root/.poetry/bin/poetry run pybabel compile -d ms365_accountcreator/translations
+RUN $POETRY_HOME/bin/poetry run pybabel compile -d ms365_accountcreator/translations
